@@ -92,7 +92,7 @@ export default function Testimonials() {
         <Reveal delay={0.1}>
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 rounded-3xl border border-line bg-ink/[0.03] px-8 py-7">
             {[
-              { k: '20+', v: 'عاماً خبرة' },
+              { k: '+25', v: 'عاماً خبرة' },
               { k: '100%', v: 'رضا العملاء' },
               { k: 'CMYK', v: 'معايير الطباعة' },
               { k: '300DPI', v: 'دقة الملفات' },

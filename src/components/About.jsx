@@ -71,7 +71,7 @@ export default function About() {
                 className="absolute -top-6 -start-6 grid h-24 w-24 place-items-center rounded-3xl border border-gold-400/30 bg-surface-2/90 text-center shadow-glow backdrop-blur-xl"
               >
                 <div>
-                  <p className="font-latin text-3xl font-black leading-none text-gold-ink">20+</p>
+                  <p className="font-latin text-3xl font-black leading-none text-gold-ink">+25</p>
                   <p className="mt-1 text-[10px] font-bold leading-tight text-ink-mute">
                     عاماً في
                     <br />
@@ -89,7 +89,7 @@ export default function About() {
               eyebrow="من أنا"
               title="من الخط إلى"
               highlight="العلامة"
-              desc="أكثر من عشرين عاماً في تحويل الأفكار إلى هويات تبقى في الذاكرة."
+              desc="أكثر من خمس وعشرين عاماً في تحويل الأفكار إلى هويات تبقى في الذاكرة."
             />
 
             <Reveal delay={0.12}>
@@ -108,7 +108,7 @@ export default function About() {
                 <span className="mx-1.5 rounded-lg bg-neon-orange/10 px-2 py-0.5 text-base font-bold text-neon-orange">
                   مصمم الجرافيك
                 </span>
-                . بخبرة تمتد لأكثر من عشرين عاماً في السوق، أفهم تماماً كيف أجعل علامتك
+                . بخبرة تمتد لأكثر من خمس وعشرين عاماً في السوق، أفهم تماماً كيف أجعل علامتك
                 التجارية تتحدث بصوت مسموع. سواء كنت تبحث عن لافتة إعلانية، مطبوعات ورقية، أو
                 تصميمات عصرية؛ أنا هنا لنجاح مشروعك.
               </p>

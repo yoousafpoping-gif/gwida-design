@@ -63,7 +63,7 @@ export default function Footer() {
             </div>
 
             <p className="mt-5 max-w-sm text-sm leading-[2] text-ink-mute">
-              خطاط، رسام ديجيتال، ومصمم جرافيك. أكثر من عشرين عاماً في تحويل الأفكار إلى هويات
+              خطاط، رسام ديجيتال، ومصمم جرافيك. أكثر من خمس وعشرين عاماً في تحويل الأفكار إلى هويات
               بصرية تُقرأ من على بُعد مترين.
             </p>
 
@@ -150,7 +150,7 @@ export default function Footer() {
                 <span className="font-latin font-bold text-gold-ink">{PROJECTS.length + MENUS.length}+</span> مشروع
               </span>
               <span>
-                <span className="font-latin font-bold text-gold-ink">20+</span> عاماً
+                <span className="font-latin font-bold text-gold-ink">+25</span> عاماً
               </span>
             </div>
           </div>

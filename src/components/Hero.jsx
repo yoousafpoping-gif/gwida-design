@@ -78,7 +78,7 @@ function RotatingBadge({ className = '' }) {
         </defs>
         <text className="fill-gold-300 text-[15px] font-bold tracking-[0.28em]">
           <textPath href="#badge-circle" startOffset="0%">
-            • أحمد جويدة • تصميم وخط عربي • منذ أكثر من عشرين عاماً •
+            • أحمد جويدة • تصميم وخط عربي • منذ أكثر من خمس وعشرين عاماً •
           </textPath>
         </text>
         <circle cx="100" cy="100" r="88" fill="none" stroke="url(#badgeGrad)" strokeWidth="0.75" opacity="0.5" />
@@ -189,7 +189,7 @@ export default function Hero() {
             >
               أكثر من{' '}
               <span className="relative inline-block">
-                <span className="text-gold-gradient animate-shimmer">20 عاماً</span>
+                <span className="text-gold-gradient animate-shimmer">25 عاماً</span>
                 <svg
                   className="absolute -bottom-1.5 start-0 h-2.5 w-full text-gold-ink/60"
                   viewBox="0 0 100 12"

@@ -320,7 +320,7 @@ export const TESTIMONIALS = [
    HERO STATS
    ============================================================ */
 export const STATS = [
-  { value: '20+', label: 'عاماً من الخبرة' },
+  { value: '+25', label: 'عاماً من الخبرة' },
   { value: '+250', label: 'مشروعاً منجزاً' },
   { value: '4', label: 'مجالات تخصص' },
 ]
