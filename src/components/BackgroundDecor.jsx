@@ -1,5 +1,6 @@
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import { useEffect, useRef } from 'react'
+import { useI18n } from '../i18n/index.jsx'
 
 /**
  * Fixed ambient layer: gradient aurora blobs, a fine grid, grain,
@@ -119,13 +120,20 @@ function Aurora() {
 
 /** Thin progress rail pinned to the very top of the viewport. */
 export function ScrollProgress() {
+  const { isRTL } = useI18n()
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.3 })
 
   return (
     <motion.div
-      style={{ scaleX, transformOrigin: 'right' }}
-      className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-right bg-[linear-gradient(to_left,#F8C24E,#FF7A2F,#2DD9F0)]"
+      /* The rail grows away from the reading edge, which sits on the
+         right in RTL and on the left in LTR. */
+      style={{ scaleX, transformOrigin: isRTL ? 'right' : 'left' }}
+      className={
+        isRTL
+          ? 'fixed inset-x-0 top-0 z-[60] h-[3px] origin-right bg-[linear-gradient(to_left,#F8C24E,#FF7A2F,#2DD9F0)]'
+          : 'fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-[linear-gradient(to_right,#F8C24E,#FF7A2F,#2DD9F0)]'
+      }
     />
   )
 }

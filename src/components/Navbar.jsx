@@ -8,18 +8,19 @@ import {
   scrollToSection,
 } from '../hooks/index.js'
 import { FacebookIcon, MoonIcon, SunIcon, WhatsAppIcon } from './ui/Icons.jsx'
+import { useI18n } from '../i18n/index.jsx'
 
 const SECTION_IDS = NAV_LINKS.map((l) => l.id)
 
 /** Custom brand mark. The source logo.png is an opaque square, so it is
  *  presented inside a rounded tile — that reads as a deliberate brand chip
  *  in both themes instead of a stray dark box on the light background. */
-function Logo({ compact }) {
+function Logo({ compact, t }) {
   return (
     <button
       onClick={() => scrollToSection('home')}
       className="group flex items-center gap-3 text-start"
-      aria-label="Gwida Design — العودة للرئيسية"
+      aria-label={t('nav.brandAria')}
     >
       {/* The tile stays dark in BOTH themes on purpose: logo.png is an
           opaque square with a dark-navy field, so a near-black tile lets
@@ -52,14 +53,14 @@ function Logo({ compact }) {
 }
 
 /** Sun / moon toggle. */
-function ThemeToggle({ isDark, onToggle }) {
+function ThemeToggle({ isDark, onToggle, t }) {
   return (
     <button
       onClick={onToggle}
       role="switch"
       aria-checked={!isDark}
-      aria-label={isDark ? 'تفعيل الوضع الفاتح' : 'تفعيل الوضع الداكن'}
-      title={isDark ? 'الوضع الفاتح' : 'الوضع الداكن'}
+      aria-label={isDark ? t('nav.enableLight') : t('nav.enableDark')}
+      title={isDark ? t('nav.themeLight') : t('nav.themeDark')}
       className="group relative grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-2xl border border-line bg-surface-2/70 text-ink-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-ink/45 hover:text-gold-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/60"
     >
       {/* Sun rides in from one side, moon out to the other. Both are
@@ -93,11 +94,27 @@ function ThemeToggle({ isDark, onToggle }) {
   )
 }
 
+/** Language toggle. The label is the language you switch TO, which is why
+ *  `nav.langToggle` resolves to "English" in Arabic and "عربي" in English. */
+function LangToggle({ label, onToggle }) {
+  return (
+    <button
+      onClick={onToggle}
+      aria-label={label}
+      title={label}
+      className="grid h-11 shrink-0 place-items-center overflow-hidden rounded-2xl border border-line bg-surface-2/70 px-3.5 text-sm font-bold text-ink-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-ink/45 hover:text-gold-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/60"
+    >
+      {label}
+    </button>
+  )
+}
+
 export default function Navbar() {
   const scrolled = useScrolled(30)
   const active = useActiveSection(SECTION_IDS)
   const [open, setOpen] = useState(false)
   const { isDark, toggle } = useTheme()
+  const { isRTL, pick, t, toggle: toggleLang } = useI18n()
 
   // Close the mobile drawer whenever the viewport grows.
   useEffect(() => {
@@ -144,7 +161,7 @@ export default function Navbar() {
               : 'border border-transparent bg-transparent'
           }`}
         >
-          <Logo compact={scrolled} />
+          <Logo compact={scrolled} t={t} />
 
           {/* Desktop links */}
           <ul className="hidden items-center gap-1 lg:flex">
@@ -168,7 +185,7 @@ export default function Navbar() {
                     {!isActive && (
                       <span className="absolute inset-0 -z-10 rounded-full bg-ink/[0.06] opacity-0 transition-opacity duration-300 hover:opacity-100" />
                     )}
-                    {link.label}
+                    {pick(link, 'label')}
                   </button>
                 </li>
               )
@@ -183,15 +200,16 @@ export default function Navbar() {
               className="hidden items-center gap-2 rounded-full bg-[#25D366]/10 px-4 py-2 text-sm font-bold text-[#128C4A] ring-1 ring-[#25D366]/35 transition-all duration-300 hover:bg-[#25D366]/20 hover:shadow-[0_10px_30px_-12px_rgba(37,211,102,0.8)] sm:inline-flex dark:text-[#5BF08C]"
             >
               <WhatsAppIcon className="h-4 w-4" />
-              واتساب
+              {t('nav.whatsapp')}
             </a>
 
-            <ThemeToggle isDark={isDark} onToggle={toggle} />
+            <ThemeToggle isDark={isDark} onToggle={toggle} t={t} />
+            <LangToggle label={t('nav.langToggle')} onToggle={toggleLang} />
 
             {/* Burger */}
             <button
               onClick={() => setOpen((v) => !v)}
-              aria-label={open ? 'إغلاق القائمة' : 'فتح القائمة'}
+              aria-label={open ? t('nav.closeMenu') : t('nav.openMenu')}
               aria-expanded={open}
               className="relative grid h-11 w-11 place-items-center rounded-2xl border border-line bg-surface-2/70 lg:hidden"
             >
@@ -228,16 +246,16 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
             />
             <motion.ul
-              initial={{ x: '-100%' }}
+              initial={{ x: isRTL ? '100%' : '-100%' }}
               animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
+              exit={{ x: isRTL ? '100%' : '-100%' }}
               transition={{ type: 'spring', stiffness: 260, damping: 30 }}
               className="absolute inset-y-0 start-0 flex w-[82%] max-w-sm flex-col gap-1 border-e border-line bg-surface-2 p-6 pt-28"
             >
               {NAV_LINKS.map((link, i) => (
                 <motion.li
                   key={link.id}
-                  initial={{ opacity: 0, x: -24 }}
+                  initial={{ opacity: 0, x: isRTL ? 24 : -24 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.08 + i * 0.06 }}
                 >
@@ -250,7 +268,7 @@ export default function Navbar() {
                     }`}
                   >
                     <span className="font-latin text-xs text-ink-faint">0{i + 1}</span>
-                    {link.label}
+                    {pick(link, 'label')}
                   </button>
                 </motion.li>
               ))}
@@ -263,7 +281,7 @@ export default function Navbar() {
                   className="flex items-center justify-center gap-2 rounded-2xl bg-[#25D366]/12 py-3 font-bold text-[#128C4A] ring-1 ring-[#25D366]/30 dark:text-[#5BF08C]"
                 >
                   <WhatsAppIcon className="h-5 w-5" />
-                  تواصل واتساب
+                  {t('nav.whatsappAria')}
                 </a>
                 <a
                   href="https://www.facebook.com/ahmed.alfanan2"
@@ -272,7 +290,7 @@ export default function Navbar() {
                   className="flex items-center justify-center gap-2 rounded-2xl bg-[#1877F2]/12 py-3 font-bold text-[#1257C4] ring-1 ring-[#1877F2]/30 dark:text-[#7FB4FF]"
                 >
                   <FacebookIcon className="h-5 w-5" />
-                  صفحة الفيسبوك
+                  {t('nav.facebookAria')}
                 </a>
               </li>
             </motion.ul>

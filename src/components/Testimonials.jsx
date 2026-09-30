@@ -1,9 +1,11 @@
 import { TESTIMONIALS } from '../data/site.js'
+import { useI18n } from '../i18n/index.jsx'
 import SectionHeading from './ui/SectionHeading.jsx'
 import Reveal from './ui/Reveal.jsx'
 import { QuoteIcon, StarIcon } from './ui/Icons.jsx'
 
 function Card({ t }) {
+  const { pick } = useI18n()
   return (
     <figure className="group relative flex w-[19rem] shrink-0 snap-center flex-col rounded-3xl border border-line bg-ink/[0.035] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-gold-400/30 hover:bg-ink/[0.06] sm:w-[22rem]">
       <span className="absolute -bottom-10 -start-8 h-28 w-28 rounded-full bg-gold-400/[0.09] blur-2xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
@@ -16,16 +18,16 @@ function Card({ t }) {
       </div>
 
       <blockquote className="relative mt-4 flex-1 text-[15px] leading-[2] text-ink-soft">
-        {t.text}
+        {pick(t, 'text')}
       </blockquote>
 
       <figcaption className="relative mt-6 flex items-center gap-3 border-t border-line pt-5">
         <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gold-sheen font-display text-base font-black text-night-950">
-          {t.name.charAt(0)}
+          {pick(t, 'name').charAt(0)}
         </span>
         <div>
-          <p className="text-sm font-bold text-ink">{t.name}</p>
-          <p className="mt-0.5 text-[11px] text-ink-mute">{t.role}</p>
+          <p className="text-sm font-bold text-ink">{pick(t, 'name')}</p>
+          <p className="mt-0.5 text-[11px] text-ink-mute">{pick(t, 'role')}</p>
         </div>
       </figcaption>
     </figure>
@@ -54,16 +56,17 @@ function Track({ items }) {
 export default function Testimonials() {
   const rowA = TESTIMONIALS
   const rowB = [...TESTIMONIALS].reverse()
+  const { t } = useI18n()
 
   return (
     <section id="testimonials" className="relative overflow-hidden py-24 sm:py-28 lg:py-32">
       <div className="wrap">
         <SectionHeading
           index="04"
-          eyebrow="آراء العملاء"
-          title="آراء"
-          highlight="شركاء النجاح"
-          desc="ما يقوله من تعاملوا معي في الطباعة والخط العربي — رأيتهم أقرب من أي وصف."
+          eyebrow={t('testimonials.eyebrow')}
+          title={t('testimonials.titleA')}
+          highlight={t('testimonials.titleB')}
+          desc={t('testimonials.desc')}
           align="center"
         />
       </div>
@@ -92,14 +95,14 @@ export default function Testimonials() {
         <Reveal delay={0.1}>
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 rounded-3xl border border-line bg-ink/[0.03] px-8 py-7">
             {[
-              { k: '+25', v: 'عاماً خبرة' },
-              { k: '100%', v: 'رضا العملاء' },
-              { k: 'CMYK', v: 'معايير الطباعة' },
-              { k: '300DPI', v: 'دقة الملفات' },
+              { id: 'testimonials.pills.experience', k: '+25' },
+              { id: 'testimonials.pills.satisfaction', k: '100%' },
+              { id: 'testimonials.pills.standards', k: 'CMYK' },
+              { id: 'testimonials.pills.precision', k: '300DPI' },
             ].map((s) => (
-              <div key={s.v} className="flex items-baseline gap-2">
+              <div key={s.id} className="flex items-baseline gap-2">
                 <span className="font-latin text-2xl font-black text-gold-ink">{s.k}</span>
-                <span className="text-sm font-semibold text-ink-mute">{s.v}</span>
+                <span className="text-sm font-semibold text-ink-mute">{t(s.id)}</span>
               </div>
             ))}
           </div>

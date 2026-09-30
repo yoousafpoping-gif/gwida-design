@@ -7,15 +7,18 @@ import Portfolio from './components/Portfolio.jsx'
 import Testimonials from './components/Testimonials.jsx'
 import Contact from './components/Contact.jsx'
 import Footer, { FloatingContact } from './components/Footer.jsx'
+import { LanguageProvider, useI18n } from './i18n/index.jsx'
 
-export default function App() {
+function Shell() {
+  const { dir, t } = useI18n()
+
   return (
-    <div className="relative min-h-screen overflow-x-clip">
+    <div dir={dir} className="relative min-h-screen overflow-x-clip">
       <a
         href="#about"
         className="sr-only focus:not-sr-only focus:fixed focus:end-4 focus:top-4 focus:z-[100] focus:rounded-xl focus:bg-gold-400 focus:px-5 focus:py-3 focus:font-bold focus:text-night-950"
       >
-        تخطَّ إلى المحتوى
+        {t('app.skipToContent')}
       </a>
 
       <BackgroundDecor />
@@ -33,5 +36,13 @@ export default function App() {
       <Footer />
       <FloatingContact />
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <Shell />
+    </LanguageProvider>
   )
 }

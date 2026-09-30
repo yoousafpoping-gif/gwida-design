@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { SERVICES } from '../data/site.js'
+import { useI18n } from '../i18n/index.jsx'
 import { RevealGroup, RevealItem } from './ui/Reveal.jsx'
 import SectionHeading from './ui/SectionHeading.jsx'
 import { SERVICES_ICONS, ArrowIcon } from './ui/Icons.jsx'
@@ -43,6 +44,7 @@ function ServiceCard({ service, featured }) {
   const Icon = SERVICES_ICONS[service.icon]
   const a = ACCENTS[service.accent]
   const ref = useRef(null)
+  const { isRTL, pick, t } = useI18n()
 
   // Pointer-tracked spotlight coordinates
   const onMove = (e) => {
@@ -82,10 +84,10 @@ function ServiceCard({ service, featured }) {
         </span>
 
         <h3 className={`mt-6 text-xl font-black leading-snug text-ink ${featured ? 'sm:text-3xl' : ''}`}>
-          {service.title}
+          {pick(service, 'title')}
         </h3>
 
-        <p className="mt-3 flex-1 text-sm leading-[1.95] text-ink-mute">{service.desc}</p>
+        <p className="mt-3 flex-1 text-sm leading-[1.95] text-ink-mute">{pick(service, 'desc')}</p>
 
         {/* Divider + link */}
         <div className="mt-7 flex items-center justify-between border-t border-line pt-5">
@@ -93,17 +95,23 @@ function ServiceCard({ service, featured }) {
             {service.id.toUpperCase()}
           </span>
           <span className="flex items-center gap-2 text-xs font-bold text-ink-mute transition-colors duration-300 group-hover:text-ink">
-            اطلب الخدمة
+            {t('services.cta')}
+            {/* Arrow points at the inline-end edge, so its nudge flips with dir. */}
             <ArrowIcon
-              className={`h-3.5 w-3.5 transition-transform duration-500 group-hover:-translate-x-1 ${a.text}`}
+              className={`h-3.5 w-3.5 transition-transform duration-500 ${
+                isRTL ? 'group-hover:-translate-x-1' : 'group-hover:translate-x-1'
+              } ${a.text}`}
             />
           </span>
         </div>
       </div>
 
       {/* Bottom sheen line that wipes in on hover */}
+      {/* Sheen wipes in from the inline-start edge: origin and gradient both flip. */}
       <span
-        className={`pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-right scale-x-0 bg-gradient-to-l ${a.sheen} to-transparent transition-transform duration-500 group-hover:scale-x-100`}
+        className={`pointer-events-none absolute inset-x-0 bottom-0 h-[2px] scale-x-0 ${
+          isRTL ? 'origin-right bg-gradient-to-l' : 'origin-left bg-gradient-to-r'
+        } ${a.sheen} to-transparent transition-transform duration-500 group-hover:scale-x-100`}
       />
     </div>
   )
@@ -111,6 +119,7 @@ function ServiceCard({ service, featured }) {
 
 export default function Services() {
   const [lead, ...rest] = SERVICES
+  const { t } = useI18n()
 
   return (
     <section id="services" className="relative overflow-hidden py-24 sm:py-28 lg:py-32">
@@ -118,17 +127,17 @@ export default function Services() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
             index="02"
-            eyebrow="خدماتي"
-            title="أربع أدوات"
-            highlight="لنجاح علامتك"
-            desc="من الفكرة الأولى حتى الملف النهائي الجاهز للطباعة — كل خدمة مُعالَجَة بنفس المعيار، ونفس العناية بالتفاصيل."
+            eyebrow={t('services.eyebrow')}
+            title={t('services.titleA')}
+            highlight={t('services.titleB')}
+            desc={t('services.desc')}
           />
 
           <RevealGroup className="flex flex-wrap gap-2 lg:justify-end">
-            {['جودة طباعة عالية', 'تسليم في الموعد', 'ملفات جاهزة'].map((chip) => (
+            {['services.pills.print', 'services.pills.deadline', 'services.pills.ready'].map((chip) => (
               <RevealItem key={chip}>
                 <span className="rounded-full border border-line bg-ink/[0.04] px-3.5 py-1.5 text-xs font-semibold text-ink-mute">
-                  {chip}
+                  {t(chip)}
                 </span>
               </RevealItem>
             ))}

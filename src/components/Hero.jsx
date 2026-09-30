@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion'
-import { PROFILE_IMG, ROLES, STATS } from '../data/site.js'
+import { PROFILE_IMG, ROLES, ROLES_EN, STATS } from '../data/site.js'
 import { scrollToSection } from '../hooks/index.js'
+import { useI18n } from '../i18n/index.jsx'
 import { ArrowIcon, SparkIcon } from './ui/Icons.jsx'
 
 /* ------------------------------------------------------------------ *
@@ -9,7 +10,7 @@ import { ArrowIcon, SparkIcon } from './ui/Icons.jsx'
  * Arabic-only: a single-direction string avoids bidi reordering,
  * so the caret and the growing text never jump sideways.
  * ------------------------------------------------------------------ */
-function Typewriter({ words, className = '' }) {
+function Typewriter({ words, className = '', dir }) {
   const [index, setIndex] = useState(0)
   const [text, setText] = useState('')
   const [deleting, setDeleting] = useState(false)
@@ -50,7 +51,7 @@ function Typewriter({ words, className = '' }) {
   }, [text, deleting, index, pause, words])
 
   return (
-    <span dir="rtl" className={`font-display font-bold ${className}`}>
+    <span dir={dir} className={`font-display font-bold ${className}`}>
       {text}
       <span className="ms-1.5 inline-block h-[0.95em] w-[2.5px] translate-y-[0.16em] animate-caret bg-gold-400 align-middle" />
     </span>
@@ -60,7 +61,7 @@ function Typewriter({ words, className = '' }) {
 /* ------------------------------------------------------------------ *
  * Rotating circular badge with Arabic calligraphy-style copy.
  * ------------------------------------------------------------------ */
-function RotatingBadge({ className = '' }) {
+function RotatingBadge({ className = '', text }) {
   return (
     <div className={`absolute h-32 w-32 sm:h-40 sm:w-40 ${className}`}>
       <svg viewBox="0 0 200 200" className="h-full w-full animate-spinSlow">
@@ -78,7 +79,7 @@ function RotatingBadge({ className = '' }) {
         </defs>
         <text className="fill-gold-300 text-[15px] font-bold tracking-[0.28em]">
           <textPath href="#badge-circle" startOffset="0%">
-            • أحمد جويدة • تصميم وخط عربي • منذ أكثر من خمس وعشرين عاماً •
+            {text}
           </textPath>
         </text>
         <circle cx="100" cy="100" r="88" fill="none" stroke="url(#badgeGrad)" strokeWidth="0.75" opacity="0.5" />
@@ -93,6 +94,7 @@ function RotatingBadge({ className = '' }) {
 export default function Hero() {
   const sectionRef = useRef(null)
   const frameRef = useRef(null)
+  const { dir, lang, pick, t } = useI18n()
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -150,7 +152,7 @@ export default function Hero() {
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
               </span>
               <span className="text-xs font-bold tracking-wide text-emerald-300">
-                متاح حالياً لمشاريع جديدة
+                {t('hero.available')}
               </span>
               <span className="rounded-full bg-emerald-400/15 px-2.5 py-0.5 text-[10px] font-bold text-emerald-200">
                 2026
@@ -164,7 +166,7 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
               className="mt-6 font-display text-[3.1rem] font-black leading-[1.05] tracking-tight text-ink sm:text-[4.2rem] lg:text-[5rem]"
             >
-              <span className="block">أحمد جويدة</span>
+              <span className="block">{t('hero.name')}</span>
               <span className="latin mt-1 block font-latin text-lg font-medium tracking-[0.42em] text-ink-mute sm:text-xl">
                 AHMED GWIDA
               </span>
@@ -177,7 +179,11 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.18 }}
               className="mt-6 flex items-center gap-3"
             >
-              <Typewriter words={ROLES} className="text-2xl text-gold-ink sm:text-3xl" />
+              <Typewriter
+                words={lang === 'ar' ? ROLES : ROLES_EN}
+                dir={dir}
+                className="text-2xl text-gold-ink sm:text-3xl"
+              />
             </motion.div>
 
             {/* Main heading */}
@@ -187,9 +193,11 @@ export default function Hero() {
               transition={{ duration: 0.85, delay: 0.26, ease: [0.22, 1, 0.36, 1] }}
               className="mt-7 max-w-2xl text-[1.35rem] font-bold leading-[1.65] text-ink-soft sm:text-[1.6rem] lg:text-[1.75rem]"
             >
-              أكثر من{' '}
+              {t('hero.yearsPrefix')}{' '}
               <span className="relative inline-block">
-                <span className="text-gold-gradient animate-shimmer">25 عاماً</span>
+                <span className="text-gold-gradient animate-shimmer">
+                  {t('hero.yearsValue')}
+                </span>
                 <svg
                   className="absolute -bottom-1.5 start-0 h-2.5 w-full text-gold-ink/60"
                   viewBox="0 0 100 12"
@@ -204,8 +212,9 @@ export default function Hero() {
                   />
                 </svg>
               </span>{' '}
-              من الشغف.. حيث يتحول التصميم إلى{' '}
-              <span className="text-gold-gradient animate-shimmer">فن</span>، والفن إلى هوية.
+              {t('hero.headlineA')}{' '}
+              <span className="text-gold-gradient animate-shimmer">{t('hero.headlineArt')}</span>
+              {t('hero.headlineC')}
             </motion.p>
 
             {/* Subheading */}
@@ -215,8 +224,7 @@ export default function Hero() {
               transition={{ duration: 0.85, delay: 0.34 }}
               className="mt-4 max-w-xl text-[15px] leading-[2] text-ink-mute sm:text-base"
             >
-              خطاط، رسام ديجيتال، ومصمم جرافيك. أتولى التعبير عن هويتك البصرية من خلال
-              تصميمات لافتة ومطبوعات احترافية.
+              {t('hero.sub')}
             </motion.p>
 
             {/* CTAs */}
@@ -228,11 +236,15 @@ export default function Hero() {
             >
               <button onClick={() => scrollToSection('portfolio')} className="btn-gold group">
                 <SparkIcon className="h-4 w-4 transition-transform duration-500 group-hover:rotate-90" />
-                شاهد أعمالي
+                {t('hero.ctaWork')}
               </button>
               <button onClick={() => scrollToSection('contact')} className="btn-ghost group">
-                تواصل معي
-                <ArrowIcon className="h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1.5" />
+                {t('hero.ctaContact')}
+                <ArrowIcon
+                  className={`h-4 w-4 transition-transform duration-500 ${
+                    dir === 'rtl' ? 'group-hover:translate-x-1.5' : 'group-hover:-translate-x-1.5'
+                  }`}
+                />
               </button>
             </motion.div>
 
@@ -249,7 +261,7 @@ export default function Hero() {
                     {s.value}
                   </dt>
                   <dd className="mt-1 text-[11px] font-semibold text-ink-mute sm:text-xs">
-                    {s.label}
+                    {pick(s, 'label')}
                   </dd>
                 </div>
               ))}
@@ -275,7 +287,7 @@ export default function Hero() {
                   <div className="absolute inset-0 bg-[linear-gradient(160deg,rgba(248,194,78,0.18),transparent_45%,rgba(45,217,240,0.14))]" />
                   <img
                     src={PROFILE_IMG}
-                    alt="أحمد جويدة — مصمم جرافيك وخطاط"
+                    alt={t('hero.imgAlt')}
                     width="1024"
                     height="1024"
                     loading="eager"
@@ -304,7 +316,7 @@ export default function Hero() {
                       <p className="font-latin text-[10px] font-bold tracking-[0.3em] text-gold-ink">
                         GWIDA DESIGN
                       </p>
-                      <p className="mt-1 text-sm font-bold text-ink">أحمد جويدة</p>
+                      <p className="mt-1 text-sm font-bold text-ink">{t('hero.name')}</p>
                     </div>
                     <span className="rounded-full border border-line bg-ink/10 px-2.5 py-1 text-[10px] font-bold text-ink backdrop-blur">
                       2005 — 2026
@@ -323,8 +335,8 @@ export default function Hero() {
                   ✍︎
                 </span>
                 <div>
-                  <p className="text-xs font-black text-ink">خط عربي أصيل</p>
-                  <p className="text-[10px] text-ink-mute">Calligraphy</p>
+                  <p className="text-xs font-black text-ink">{t('hero.chipCalligraphy')}</p>
+                  <p className="text-[10px] text-ink-mute">{t('hero.chipCalligraphySub')}</p>
                 </div>
               </motion.div>
 
@@ -337,12 +349,12 @@ export default function Hero() {
                   🎨
                 </span>
                 <div>
-                  <p className="text-xs font-black text-ink">ملفات جاهزة للطباعة</p>
-                  <p className="text-[10px] text-ink-mute">Print Ready</p>
+                  <p className="text-xs font-black text-ink">{t('hero.chipPrint')}</p>
+                  <p className="text-[10px] text-ink-mute">{t('hero.chipPrintSub')}</p>
                 </div>
               </motion.div>
 
-              <RotatingBadge className="-bottom-10 -start-10 hidden sm:block" />
+              <RotatingBadge className="-bottom-10 -start-10 hidden sm:block" text={t('hero.badge')} />
             </div>
           </motion.div>
         </div>
@@ -354,7 +366,7 @@ export default function Hero() {
           transition={{ delay: 1.3, duration: 0.8 }}
           onClick={() => scrollToSection('about')}
           className="mx-auto mt-16 flex w-fit flex-col items-center gap-2 text-ink-faint transition-colors hover:text-gold-ink lg:mt-20"
-          aria-label="انتقل إلى قسم من أنا"
+          aria-label={t('hero.scrollAria')}
         >
           <span className="text-[10px] font-bold tracking-[0.3em]">SCROLL</span>
           <span className="relative h-12 w-[1px] overflow-hidden bg-ink/10">

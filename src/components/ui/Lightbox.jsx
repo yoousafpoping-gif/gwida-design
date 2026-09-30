@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'
 import { CloseIcon, ArrowIcon } from './Icons.jsx'
+import { useI18n } from '../../i18n/index.jsx'
 
 export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
+  const { t } = useI18n()
   const item = items[index]
   if (!item) return null
 
@@ -20,7 +22,7 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
         {/* Close */}
         <button
           onClick={onClose}
-          aria-label="إغلاق"
+          aria-label={t('lightbox.close')}
           className="absolute end-5 top-5 z-10 grid h-12 w-12 place-items-center rounded-2xl border border-line bg-ink/[0.06] text-ink transition-all duration-300 hover:rotate-90 hover:border-gold-400/50 hover:bg-gold-400/15"
         >
           <CloseIcon className="h-5 w-5" />
@@ -32,7 +34,7 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
             e.stopPropagation()
             onPrev()
           }}
-          aria-label="السابق"
+          aria-label={t('lightbox.prev')}
           className="absolute start-4 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-2xl border border-line bg-ink/[0.06] text-ink transition-all duration-300 hover:border-gold-400/50 hover:bg-gold-400/15"
         >
           <ArrowIcon className="h-5 w-5 rotate-180" />
@@ -42,7 +44,7 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
             e.stopPropagation()
             onNext()
           }}
-          aria-label="التالي"
+          aria-label={t('lightbox.next')}
           className="absolute end-4 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-2xl border border-line bg-ink/[0.06] text-ink transition-all duration-300 hover:border-gold-400/50 hover:bg-gold-400/15"
         >
           <ArrowIcon className="h-5 w-5" />

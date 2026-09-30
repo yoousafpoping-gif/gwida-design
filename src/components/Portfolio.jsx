@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { MENUS, PROJECTS } from '../data/site.js'
+import { CATEGORIES, MENUS, PROJECTS } from '../data/site.js'
+import { useI18n } from '../i18n/index.jsx'
 import SectionHeading from './ui/SectionHeading.jsx'
 import Reveal from './ui/Reveal.jsx'
 import Lightbox from './ui/Lightbox.jsx'
@@ -19,6 +20,10 @@ import { ArrowIcon, SparkIcon } from './ui/Icons.jsx'
 const PREVIEW_LIMIT = 6
 const MENU_PREVIEW_LIMIT = 4
 
+/* Category id -> CATEGORIES entry, so every footer chip label can be
+   resolved through `pick()` instead of the raw Arabic string on the item. */
+const CATEGORY_BY_ID = Object.fromEntries(CATEGORIES.map((c) => [c.id, c]))
+
 /* ------------------------------------------------------------------ *
  * Gallery card
  * - The image is NEVER cropped: `h-auto w-full object-contain` lets
@@ -27,8 +32,13 @@ const MENU_PREVIEW_LIMIT = 4
  *   is ever overlaid on top of the artwork.
  * ------------------------------------------------------------------ */
 function Card({ item, onOpen, index }) {
+  const { lang, pick, t } = useI18n()
   const [loaded, setLoaded] = useState(false)
   const [failed, setFailed] = useState(false)
+
+  const title = pick(item, 'title')
+  const desc = pick(item, 'description', 'enDesc')
+  const category = pick(CATEGORY_BY_ID[item.cat], 'label')
 
   return (
     <motion.article
@@ -45,7 +55,7 @@ function Card({ item, onOpen, index }) {
       <button
         onClick={() => onOpen(item)}
         className="block w-full text-start"
-        aria-label={`عرض ${item.title}`}
+        aria-label={t('portfolio.ariaView', { name: title })}
       >
         {/* ---------- Image area (uncropped) ---------- */}
         <div className="relative w-full overflow-hidden bg-surface-3">
@@ -65,13 +75,13 @@ function Card({ item, onOpen, index }) {
               style={{ aspectRatio: item.aspectRatio }}
             >
               <span className="font-display text-sm font-bold leading-relaxed text-ink-soft">
-                {item.title}
+                {title}
               </span>
             </div>
           ) : (
             <img
               src={item.src}
-              alt={`${item.title} — ${item.category}`}
+              alt={`${title} — ${category}`}
               width={item.width}
               height={item.height}
               loading="lazy"
@@ -104,7 +114,7 @@ function Card({ item, onOpen, index }) {
                 aria-hidden="true"
               />
               <span className="text-[11px] font-bold tracking-wide text-ink-mute">
-                {item.category}
+                {category}
               </span>
             </span>
 
@@ -114,14 +124,14 @@ function Card({ item, onOpen, index }) {
           </div>
 
           <h3 className="mt-3 font-display text-base font-black leading-snug text-ink transition-colors duration-300 group-hover:text-gold-ink sm:text-[17px]">
-            {item.title}
+            {title}
           </h3>
 
-          <p className="mt-2 text-[13px] leading-loose text-ink-mute">{item.description}</p>
+          <p className="mt-2 text-[13px] leading-loose text-ink-mute">{desc}</p>
 
           <span className="mt-4 flex items-center gap-2 text-[11px] font-bold text-ink-mute transition-colors duration-300 group-hover:text-gold-ink">
             <span className="h-px w-6 bg-ink/20 transition-all duration-300 group-hover:w-9 group-hover:bg-gold-400/60" />
-            عرض المشروع
+            {t('portfolio.viewProject')}
           </span>
         </div>
       </button>
@@ -171,6 +181,7 @@ function Gallery({ items, limit }) {
  * Uncropped, with the caption in a solid footer beneath the artwork.
  * ------------------------------------------------------------------ */
 function MenuSide({ image, caption, side, onOpen, index }) {
+  const { t } = useI18n()
   const [loaded, setLoaded] = useState(false)
   const [failed, setFailed] = useState(false)
   const ratio = `${image.width} / ${image.height}`
@@ -180,7 +191,7 @@ function MenuSide({ image, caption, side, onOpen, index }) {
       <button
         onClick={() => onOpen(image)}
         className="block w-full text-start"
-        aria-label={`عرض ${caption}`}
+        aria-label={t('portfolio.ariaView', { name: caption })}
       >
         <div className="relative w-full overflow-hidden bg-surface-3">
           {!loaded && (
@@ -246,6 +257,8 @@ function MenuSide({ image, caption, side, onOpen, index }) {
  * flipping through stays in document order.
  * ------------------------------------------------------------------ */
 function MenuGallery({ menus }) {
+  const { lang, pick, t } = useI18n()
+
   // Flatten once: [menu1.front, menu1.back, menu2.front, ...]
   // `flatIndex[i]` is where menu i's FRONT page starts in that sequence,
   // which only equals i*2 when every earlier menu was a pair.
@@ -254,11 +267,11 @@ function MenuGallery({ menus }) {
     const offsets = []
     for (const m of menus) {
       offsets.push(out.length)
-      out.push({ ...m.front, id: `${m.id}-front`, title: m.frontCaption })
-      if (m.back) out.push({ ...m.back, id: `${m.id}-back`, title: m.backCaption })
+      out.push({ ...m.front, id: `${m.id}-front`, title: pick(m, 'frontCaption', 'frontCaptionEn') })
+      if (m.back) out.push({ ...m.back, id: `${m.id}-back`, title: pick(m, 'backCaption', 'backCaptionEn') })
     }
     return { flat: out, flatIndex: offsets }
-  }, [menus])
+  }, [menus, lang, pick])
 
   const box = useLightbox(flat.length)
   const open = (image) => box.setIndex(flat.findIndex((f) => f.id === image.id))
@@ -288,7 +301,7 @@ function MenuGallery({ menus }) {
                   aria-hidden="true"
                 />
                 <span className="text-[11px] font-bold tracking-wide text-ink-mute">
-                  {m.category}
+                  {pick(CATEGORY_BY_ID[m.cat], 'label')}
                 </span>
               </span>
 
@@ -307,16 +320,16 @@ function MenuGallery({ menus }) {
             <div className="space-y-5">
               <MenuSide
                 image={m.front}
-                caption={m.frontCaption}
-                side="وش"
+                caption={pick(m, 'frontCaption', 'frontCaptionEn')}
+                side={t('portfolio.menuFront')}
                 onOpen={open}
                 index={flatIndex[i]}
               />
               {m.back && (
                 <MenuSide
                   image={m.back}
-                  caption={m.backCaption}
-                  side="ضهر"
+                  caption={pick(m, 'backCaption', 'backCaptionEn')}
+                  side={t('portfolio.menuBack')}
                   onOpen={open}
                   index={flatIndex[i] + 1}
                 />
@@ -344,52 +357,41 @@ function MenuGallery({ menus }) {
 /**
  * The four dedicated gallery groups, stacked vertically in display
  * order: signage -> social media -> infographics -> print & menus.
+ * All copy lives in the dictionary under `portfolio.sections.<id>.*`.
+ * `hasHighlight` marks the three groups whose title splits into two
+ * lines — the infographic heading is a single line and has no `titleB`.
  */
 const GROUPS = [
   {
     id: 'signage',
     anchor: 'portfolio-signage',
     source: 'projects',
-    eyebrow: 'لافتات',
-    title: 'تصميم اللافتات',
-    highlight: 'الإعلانية',
-    desc: 'لافتات للمحلات والمطاعم والمشاريع التجارية — تصاميم واضحة تُقرأ من بعيد وتُبرز اسم المشروع.',
-    viewAll: 'عرض كافة تصميمات اللافتات',
+    hasHighlight: true,
   },
   {
     id: 'social',
     anchor: 'portfolio-social',
     source: 'projects',
-    eyebrow: 'محتوى رقمي',
-    title: 'تصميمات',
-    highlight: 'السوشيال ميديا',
-    desc: 'منشورات ورادي للمتاجر والصفحات — محتوى بصري متسق يحافظ على هوية الماركة في كل منشور.',
-    viewAll: 'عرض كافة أعمال السوشيال ميديا',
+    hasHighlight: true,
   },
   {
     id: 'infographic',
     anchor: 'portfolio-infographic',
     source: 'projects',
-    eyebrow: 'تبسيط المعلومة',
-    title: 'الإنفوجرافيك',
-    desc: 'معلومات معقّدة مبسّطة في تصميم واحد — أرقام ومقارنات تُفهم في ثوانٍ.',
-    viewAll: 'عرض كافة أعمال الإنفوجرافيك',
+    hasHighlight: false,
   },
   {
     id: 'menus',
     anchor: 'portfolio-menus',
     source: 'menus',
-    eyebrow: 'مطبوعات',
-    title: 'المطبوعات',
-    highlight: 'والمنيوهات',
-    desc: 'مينيوهات مطاعم وفلايرات مطبوعة — الوش والضهر معروضان جنباً إلى جنب كما يُطبعان فعلياً.',
-    viewAll: 'عرض كافة المطبوعات والمنيوهات',
-    unit: 'مينيو معروض',
+    hasHighlight: true,
   },
 ]
 
 /* Small pill that opens a category's full view. */
 function ViewAllButton({ label, count, onClick }) {
+  const { isRTL } = useI18n()
+
   return (
     <button
       type="button"
@@ -400,8 +402,13 @@ function ViewAllButton({ label, count, onClick }) {
       <span className="rounded-full bg-ink/[0.06] px-2 py-0.5 font-latin text-[11px] font-bold text-ink-mute">
         {count}
       </span>
-      {/* RTL: "forward" is toward the start edge, so the arrow points back. */}
-      <ArrowIcon className="h-4 w-4 rotate-180 transition-transform duration-300 group-hover:-translate-x-1" />
+      {/* RTL: "forward" is toward the start edge, so the arrow points back.
+          The nudge is a physical translate, so it mirrors with dir. */}
+      <ArrowIcon
+        className={`h-4 w-4 rotate-180 transition-transform duration-300 ${
+          isRTL ? 'group-hover:translate-x-1' : 'group-hover:-translate-x-1'
+        }`}
+      />
     </button>
   )
 }
@@ -413,6 +420,7 @@ export default function Portfolio() {
   /* null            -> main page: preview slice of every category
      a category id   -> that category's dedicated full view          */
   const [view, setView] = useState(null)
+  const { isRTL, lang, t } = useI18n()
 
   const groups = useMemo(
     () =>
@@ -429,6 +437,17 @@ export default function Portfolio() {
   const active = view ? groups.find((g) => g.id === view) : null
   const total = PROJECTS.length + MENUS.length
 
+  /* Per-category heading + CTA copy, all from `portfolio.sections.<id>`. */
+  const sectionCopy = (g) => ({
+    eyebrow: t(`portfolio.sections.${g.id}.eyebrow`),
+    titleA: t(`portfolio.sections.${g.id}.titleA`),
+    titleB: g.hasHighlight ? t(`portfolio.sections.${g.id}.titleB`) : null,
+    desc: t(`portfolio.sections.${g.id}.desc`),
+    cta: t(`portfolio.sections.${g.id}.cta`),
+  })
+
+  const activeCopy = active ? sectionCopy(active) : null
+
   /* Keep the section heading in view when swapping between the
      preview page and a full category view. */
   const switchView = (id) => {
@@ -444,14 +463,10 @@ export default function Portfolio() {
         <div className="flex flex-col gap-9 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
             index="03"
-            eyebrow={active ? active.eyebrow : 'معرض الأعمال'}
-            title={active ? active.title : 'نماذج من'}
-            highlight={active ? active.highlight : 'أعمالي'}
-            desc={
-              active
-                ? active.desc
-                : 'لافتات إعلانية، محتوى سوشيال ميديا، إنفوجرافيك، ومطبوعات ومنيوهات — كل نوع في قسم مستقل. كل تصميم معروض بكامله دون أي قص أو تشويه.'
-            }
+            eyebrow={activeCopy ? activeCopy.eyebrow : t('portfolio.eyebrow')}
+            title={activeCopy ? activeCopy.titleA : t('portfolio.titleA')}
+            highlight={activeCopy ? activeCopy.titleB : t('portfolio.titleB')}
+            desc={activeCopy ? activeCopy.desc : t('portfolio.desc')}
           />
 
           <Reveal delay={0.1}>
@@ -461,8 +476,13 @@ export default function Portfolio() {
                 onClick={() => switchView(null)}
                 className="inline-flex items-center gap-3 rounded-2xl border border-line bg-surface-2 px-5 py-3.5 text-sm font-bold text-ink transition-all duration-300 hover:border-gold-400 hover:text-gold-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400"
               >
-                <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                العودة إلى المعرض
+                {/* Nudge is a physical translate, so it mirrors with dir. */}
+                <ArrowIcon
+                  className={`h-4 w-4 transition-transform duration-300 ${
+                    isRTL ? 'group-hover:-translate-x-1' : 'group-hover:translate-x-1'
+                  }`}
+                />
+                {t('portfolio.back')}
               </button>
             ) : (
               <div className="flex items-center gap-3 rounded-2xl border border-line bg-surface-2 px-5 py-3">
@@ -471,7 +491,7 @@ export default function Portfolio() {
                   <p className="font-latin text-xl font-black leading-none text-ink">
                     {total}
                   </p>
-                  <p className="mt-1 text-[11px] text-ink-mute">مشروع معروض</p>
+                  <p className="mt-1 text-[11px] text-ink-mute">{t('portfolio.projectShown')}</p>
                 </div>
               </div>
             )}
@@ -485,8 +505,9 @@ export default function Portfolio() {
               <div className="flex items-center gap-3">
                 <span className="h-3 w-3 shrink-0 rounded-full bg-gold-400" aria-hidden="true" />
                 <p className="text-sm font-bold text-ink-mute">
-                  عرض كامل — <span className="font-latin">{active.items.length}</span>{' '}
-                  {active.unit ?? 'مشروع'}
+                  {t('portfolio.viewFull')} —{' '}
+                  <span className="font-latin">{active.items.length}</span>{' '}
+                  {isMenus ? t('portfolio.menuShown') : t('portfolio.projectShown')}
                 </p>
               </div>
             </div>
@@ -505,23 +526,26 @@ export default function Portfolio() {
             {/* Jump links — one per group, since there is no single grid any more */}
             <Reveal delay={0.12}>
               <nav
-                aria-label="أقسام المعرض"
+                aria-label={t('portfolio.jumpAria')}
                 className="mt-12 flex flex-wrap items-center gap-2.5"
               >
-                {groups.map((g) => (
-                  <button
-                    key={g.id}
-                    type="button"
-                    onClick={() => scrollToSection(g.anchor)}
-                    className="flex items-center gap-2 rounded-full border border-line bg-surface-2 px-5 py-2.5 text-sm font-bold text-ink-mute transition-colors duration-300 hover:border-gold-ink/45 hover:text-ink"
-                  >
-                    <span className="h-2 w-2 shrink-0 rounded-full bg-gold-400" aria-hidden="true" />
-                    {g.title} {g.highlight}
-                    <span className="latin font-latin text-[11px] text-ink-faint">
-                      {g.items.length}
-                    </span>
-                  </button>
-                ))}
+                {groups.map((g) => {
+                  const copy = sectionCopy(g)
+                  return (
+                    <button
+                      key={g.id}
+                      type="button"
+                      onClick={() => scrollToSection(g.anchor)}
+                      className="flex items-center gap-2 rounded-full border border-line bg-surface-2 px-5 py-2.5 text-sm font-bold text-ink-mute transition-colors duration-300 hover:border-gold-ink/45 hover:text-ink"
+                    >
+                      <span className="h-2 w-2 shrink-0 rounded-full bg-gold-400" aria-hidden="true" />
+                      {copy.titleB ? `${copy.titleA} ${copy.titleB}` : copy.titleA}
+                      <span className="latin font-latin text-[11px] text-ink-faint">
+                        {g.items.length}
+                      </span>
+                    </button>
+                  )
+                })}
               </nav>
             </Reveal>
 
@@ -530,6 +554,7 @@ export default function Portfolio() {
               const menus = g.source === 'menus'
               const preview = menus ? g.items.slice(0, MENU_PREVIEW_LIMIT) : g.items.slice(0, PREVIEW_LIMIT)
               const hidden = g.items.length - preview.length
+              const copy = sectionCopy(g)
 
               return (
                 <div
@@ -539,10 +564,10 @@ export default function Portfolio() {
                 >
                   <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                     <SectionHeading
-                      eyebrow={g.eyebrow}
-                      title={g.title}
-                      highlight={g.highlight}
-                      desc={g.desc}
+                      eyebrow={copy.eyebrow}
+                      title={copy.titleA}
+                      highlight={copy.titleB}
+                      desc={copy.desc}
                     />
 
                     <Reveal delay={0.1}>
@@ -556,7 +581,7 @@ export default function Portfolio() {
                             {g.items.length}
                           </p>
                           <p className="mt-1 text-[11px] text-ink-mute">
-                            {g.unit ?? 'مشروع في هذا القسم'}
+                            {menus ? t('portfolio.menuShown') : t('portfolio.unit')}
                           </p>
                         </div>
                       </div>
@@ -571,7 +596,7 @@ export default function Portfolio() {
 
                   <Reveal delay={0.05}>
                     <ViewAllButton
-                      label={g.viewAll}
+                      label={copy.cta}
                       count={g.items.length}
                       onClick={() => switchView(g.id)}
                     />
@@ -579,7 +604,10 @@ export default function Portfolio() {
 
                   {hidden > 0 && (
                     <p className="mt-3 text-[11px] text-ink-faint">
-                      يُعرض {preview.length} من {g.items.length} — اضغط الزر أعلاه لمشاهدة الكل.
+                      {t('portfolio.previewNote', {
+                        shown: preview.length,
+                        total: g.items.length,
+                      })}
                     </p>
                   )}
                 </div>

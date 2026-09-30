@@ -1,40 +1,67 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { FACEBOOK, MENUS, PHONE_DISPLAY, PROJECTS, WHATSAPP } from '../data/site.js'
 import SectionHeading from './ui/SectionHeading.jsx'
 import Reveal from './ui/Reveal.jsx'
 import { FacebookIcon, PhoneIcon, SparkIcon, WhatsAppIcon, MailIcon } from './ui/Icons.jsx'
+import { useI18n } from '../i18n/index.jsx'
 
-const BUDGETS = ['مشروع واحد', 'حملة شهرية', 'هوية متكاملة']
-const NEEDS = ['لافتة إعلانية', 'مطبوعات ورقية', 'سوشيال ميديا', 'هوية بصرية', 'خط عربي / شعار']
+/** Ordered ids for the two option groups; the labels come from the
+ *  dictionary so the Arabic defaults stay byte-identical to the original. */
+const NEED_KEYS = ['sign', 'print', 'social', 'identity', 'calligraphy']
+const BUDGET_KEYS = ['single', 'monthly', 'full']
 
 const SEP = '━━━━━━━━━━━━━━━━━━━'
 
 const clean = (v) => String(v ?? '').trim()
 
 /**
- * Formats the form into a structured, readable Arabic message.
+ * Formats the form into a structured, readable message.
  * WhatsApp renders `*text*` as bold, so field labels are emphasised
  * while the body stays plain.
+ *
+ * Arabic is the source language and is spelled out inline, so the
+ * outgoing message stays byte-identical to the original Arabic-only
+ * version; English reuses the `contact.lbl*` dictionary labels.
  */
-export function buildWhatsAppMessage({ name, phone, need, budget, message }) {
+export function buildWhatsAppMessage({ name, phone, need, budget, message }, lang, t) {
+  if (lang === 'ar') {
+    return [
+      'السلام عليكم 👋',
+      'أرغب بمناقشة مشروع تصميم جديد مع Gwida Design.',
+      '',
+      SEP,
+      `*الاسم بالكامل:* ${clean(name)}`,
+      `*رقم الواتساب:* ${clean(phone)}`,
+      '',
+      `*نوع الخدمة:* ${clean(need)}`,
+      `*ميزانية تقريبية:* ${clean(budget)}`,
+      '',
+      SEP,
+      '*تفاصيل المشروع:*',
+      clean(message) || '—',
+      '',
+      SEP,
+      'المرسل من موقع Gwida Design.',
+    ].join('\n')
+  }
   return [
-    'السلام عليكم 👋',
-    'أرغب بمناقشة مشروع تصميم جديد مع Gwida Design.',
+    t('contact.greeting'),
+    t('contact.intro'),
     '',
     SEP,
-    `*الاسم بالكامل:* ${clean(name)}`,
-    `*رقم الواتساب:* ${clean(phone)}`,
+    `*${t('contact.lblName')}:* ${clean(name)}`,
+    `*${t('contact.lblPhone')}:* ${clean(phone)}`,
     '',
-    `*نوع الخدمة:* ${clean(need)}`,
-    `*ميزانية تقريبية:* ${clean(budget)}`,
+    `*${t('contact.lblNeed')}:* ${clean(need)}`,
+    `*${t('contact.lblBudget')}:* ${clean(budget)}`,
     '',
     SEP,
-    '*تفاصيل المشروع:*',
+    `*${t('contact.lblDetails')}:*`,
     clean(message) || '—',
     '',
     SEP,
-    'المرسل من موقع Gwida Design.',
+    t('contact.lblSender'),
   ].join('\n')
 }
 
@@ -73,20 +100,33 @@ function ContactCard({ href, external, icon: Icon, title, value, tone }) {
 
 export default function Contact() {
   const [sent, setSent] = useState(false)
-  const [form, setForm] = useState({
+  const { lang, t } = useI18n()
+
+  const needOptions = useMemo(() => NEED_KEYS.map((k) => t(`contact.needs.${k}`)), [lang, t])
+  const budgetOptions = useMemo(() => BUDGET_KEYS.map((k) => t(`contact.budget.${k}`)), [lang, t])
+
+  const [form, setForm] = useState(() => ({
     name: '',
     phone: '',
-    need: NEEDS[0],
-    budget: BUDGETS[0],
+    need: needOptions[0],
+    budget: budgetOptions[0],
     message: '',
-  })
+  }))
 
   const update = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
+
+  const currentNeed = needOptions.includes(form.need) ? form.need : needOptions[0]
+
+  const messageBuilder = useMemo(
+    () => (f) => buildWhatsAppMessage(f, lang, t),
+    [lang, t]
+  )
 
   const onSubmit = (e) => {
     e.preventDefault()
     // wa.me pre-fills the chat; the visitor still presses send there.
-    const url = `${WHATSAPP}?text=${encodeURIComponent(buildWhatsAppMessage(form))}`
+    const msg = messageBuilder({ ...form, need: currentNeed })
+    const url = `${WHATSAPP}?text=${encodeURIComponent(msg)}`
     window.open(url, '_blank', 'noopener,noreferrer')
     setSent(true)
     setTimeout(() => setSent(false), 4000)
@@ -98,10 +138,10 @@ export default function Contact() {
       <div className="wrap">
         <SectionHeading
           index="05"
-          eyebrow="تواصل"
-          title="لنتحدث عن"
-          highlight="مشروعك القادم"
-          desc="أرسل تفاصيل مشروعك وسأرد عليك في أقرب وقت — أو تواصل مباشرة عبر واتساب."
+          eyebrow={t('contact.eyebrow')}
+          title={t('contact.titleA')}
+          highlight={t('contact.titleB')}
+          desc={t('contact.desc')}
         />
 
         <div className="mt-14 grid gap-6 lg:grid-cols-12">
@@ -112,7 +152,7 @@ export default function Contact() {
                 href={WHATSAPP}
                 external
                 icon={WhatsAppIcon}
-                title="واتساب — الأسرع للرد"
+                title={t('contact.whatsappFastest')}
                 value={PHONE_DISPLAY}
                 tone="green"
               />
@@ -122,7 +162,7 @@ export default function Contact() {
                 href={`tel:+201009198567`}
                 external
                 icon={PhoneIcon}
-                title="اتصال هاتفي"
+                title={t('contact.call')}
                 value={PHONE_DISPLAY}
                 tone="gold"
               />
@@ -132,7 +172,7 @@ export default function Contact() {
                 href={FACEBOOK}
                 external
                 icon={FacebookIcon}
-                title="فيسبوك"
+                title={t('contact.facebook')}
                 value="ahmed.alfanan2"
                 tone="blue"
               />
@@ -146,7 +186,7 @@ export default function Contact() {
                   <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-400" />
                 </span>
                 <p className="text-sm font-semibold text-emerald-200">
-                  متاح حالياً لاستقبال مشاريع جديدة هذا الأسبوع.
+                  {t('contact.available')}
                 </p>
               </div>
             </Reveal>
@@ -155,10 +195,10 @@ export default function Contact() {
             <Reveal y={30} delay={0.3}>
               <div className="relative overflow-hidden rounded-2xl border border-line bg-[linear-gradient(140deg,rgba(248,194,78,0.1),transparent_60%)] p-6">
                 <p className="font-display text-lg font-black text-ink">
-                  عندك تصميم في بالك؟
+                  {t('contact.ideaTitle')}
                 </p>
                 <p className="mt-1.5 text-sm leading-relaxed text-ink-mute">
-                 بسّط الفكرة وأرسلها — حتى لو ناقصة — وأنا أكمّلها معاك.
+                  {t('contact.ideaBody')}
                 </p>
                 <p className="mt-4 font-latin text-xs font-bold tracking-[0.28em] text-gold-ink">
                   GWIDA DESIGN
@@ -180,29 +220,29 @@ export default function Contact() {
                     <MailIcon className="h-5 w-5" />
                   </span>
                   <div>
-                    <h3 className="text-lg font-black text-ink">أرسل رسالة</h3>
-                    <p className="text-xs text-ink-mute">نرد خلال 24 ساعة كحد أقصى</p>
+                     <h3 className="text-lg font-black text-ink">{t('contact.submit')}</h3>
+                     <p className="text-xs text-ink-mute">{t('contact.replyWithin')}</p>
                   </div>
                 </div>
 
                 <div className="mt-7 grid gap-4 sm:grid-cols-2">
                   <div>
-                    <label htmlFor="name" className="mb-2 block text-xs font-bold text-ink-mute">
-                      الاسم بالكامل
-                    </label>
+                     <label htmlFor="name" className="mb-2 block text-xs font-bold text-ink-mute">
+                       {t('contact.phName')}
+                     </label>
                     <input
                       id="name"
                       required
                       value={form.name}
                       onChange={update('name')}
-                      className="field"
-                      placeholder="مثال: محمد العوضي"
+                       className="field"
+                       placeholder={t('contact.phNameEx')}
                     />
                   </div>
                   <div>
-                    <label htmlFor="phone" className="mb-2 block text-xs font-bold text-ink-mute">
-                      رقم الواتساب
-                    </label>
+                     <label htmlFor="phone" className="mb-2 block text-xs font-bold text-ink-mute">
+                       {t('contact.phPhone')}
+                     </label>
                     <input
                       id="phone"
                       required
@@ -217,20 +257,20 @@ export default function Contact() {
                 </div>
 
                 <div className="mt-5">
-                  <span className="mb-2.5 block text-xs font-bold text-ink-mute">نوع الخدمة</span>
+                  <span className="mb-2.5 block text-xs font-bold text-ink-mute">{t('contact.fNeed')}</span>
                   <div className="flex flex-wrap gap-2">
-                    {NEEDS.map((n) => (
+                    {needOptions.map((n) => (
                       <button
                         key={n}
                         type="button"
                         onClick={() => setForm((f) => ({ ...f, need: n }))}
                         className={`relative rounded-full px-4 py-2 text-xs font-bold transition-all duration-300 ${
-                          form.need === n
+                          currentNeed === n
                             ? 'text-night-950'
                             : 'border border-line bg-ink/[0.04] text-ink-mute hover:text-ink'
                         }`}
                       >
-                        {form.need === n && (
+                        {currentNeed === n && (
                           <motion.span
                             layoutId="need-pill"
                             transition={{ type: 'spring', stiffness: 340, damping: 30 }}
@@ -244,9 +284,9 @@ export default function Contact() {
                 </div>
 
                 <div className="mt-5">
-                  <span className="mb-2.5 block text-xs font-bold text-ink-mute">ميزانية تقريبية</span>
+                  <span className="mb-2.5 block text-xs font-bold text-ink-mute">{t('contact.fBudget')}</span>
                   <div className="flex flex-wrap gap-2">
-                    {BUDGETS.map((b) => (
+                    {budgetOptions.map((b) => (
                       <button
                         key={b}
                         type="button"
@@ -265,7 +305,7 @@ export default function Contact() {
 
                 <div className="mt-5">
                   <label htmlFor="message" className="mb-2 block text-xs font-bold text-ink-mute">
-                    تفاصيل المشروع
+                    {t('contact.fDetails')}
                   </label>
                   <textarea
                     id="message"
@@ -274,7 +314,7 @@ export default function Contact() {
                     value={form.message}
                     onChange={update('message')}
                     className="field resize-none"
-                    placeholder="اكتب فكرتك، المقاسات المطلوبة، والموعد المناسب للتسليم..."
+                    placeholder={t('contact.phMessage')}
                   />
                 </div>
 
@@ -283,7 +323,7 @@ export default function Contact() {
                 <div className="mt-7">
                   <button type="submit" className="btn-gold group">
                     <SparkIcon className="h-4 w-4 transition-transform duration-500 group-hover:rotate-90" />
-                    إرسال الرسالة
+                    {t('contact.send')}
                   </button>
                 </div>
 
@@ -300,7 +340,7 @@ export default function Contact() {
                   className="overflow-hidden"
                 >
                   <p className="rounded-2xl border border-emerald-400/25 bg-emerald-400/[0.08] px-5 py-4 text-sm font-semibold text-emerald-200">
-                    تم تجهيز رسالتك وفتح محادثة واتساب في نافذة جديدة — اضغط «إرسال» هناك لإتمام الطلب.
+                    {t('contact.prepared')}
                   </p>
                 </motion.div>
               </form>
@@ -314,14 +354,14 @@ export default function Contact() {
             <div className="flex flex-wrap items-center justify-between gap-6">
               <div>
                 <p className="font-display text-xl font-black text-ink sm:text-2xl">
-                  تصفّح {PROJECTS.length + MENUS.length} مشروعاً في معرض الأعمال
+                  {t('contact.browse', { total: PROJECTS.length + MENUS.length })}
                 </p>
                 <p className="mt-1.5 text-sm text-ink-mute">
-                  ممكن تشوف أعمال مشابهة لفكرتك قبل ما نبدأ.
+                  {t('contact.browseHint')}
                 </p>
               </div>
               <a href="#portfolio" className="btn-ghost shrink-0">
-                الذهاب إلى المعرض
+                {t('contact.goPortfolio')}
               </a>
             </div>
           </div>
