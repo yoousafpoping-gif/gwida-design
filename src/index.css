@@ -1,0 +1,403 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Registered up-front so the conic border can be animated. */
+@property --ang {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* ============================================================
+   THEME TOKENS
+   ------------------------------------------------------------
+   Light is the base declaration; `.dark` (the "Midnight Atelier"
+   default) overrides it. The `.dark` class is applied to <html> by
+   the bootstrap script in index.html before first paint, then
+   toggled by the useTheme hook.
+
+   Every value below is consumed by the semantic Tailwind colors
+   declared in tailwind.config.js (surface, ink, line, ...).
+   ============================================================ */
+:root {
+  color-scheme: light;
+
+  --c-surface: #f5f7fb; /* page background */
+  --c-surface-2: #ffffff; /* cards, panels, navbar */
+  --c-surface-3: #eaeef6; /* inputs, wells, chips */
+
+  --c-ink: #0b1220; /* headings + strong text */
+  --c-ink-soft: #33415a; /* body copy */
+  --c-ink-mute: #4a5a75; /* secondary copy */
+  --c-ink-faint: #5a6b85; /* tertiary / meta (>=4.5:1 on --c-surface) */
+
+  --c-line: #d2dae8; /* standard border (~1.45:1 on --c-surface-2) */
+  --c-line-soft: #e6ebf4; /* hairline border */
+
+  /* Accent *text*. Same gold/cyan identity, darkened for contrast
+     on a light background. */
+  --c-gold-ink: #9c6520;
+  --c-cyan-ink: #0e7490;
+
+  /* Space-separated RGB channels mirroring the solid tokens above.
+     Tailwind can only inject an alpha value into a color declared as
+     `rgb(var(--token) / <alpha-value>)`, so every token that is used
+     with a `/NN` opacity modifier needs a channel twin. Keep these
+     triplets in sync with the hex values above. */
+  --c-surface-rgb: 245 247 251;
+  --c-surface-2-rgb: 255 255 255;
+  --c-surface-3-rgb: 234 238 246;
+  --c-ink-rgb: 11 18 32;
+  --c-ink-soft-rgb: 51 65 90;
+  --c-ink-mute-rgb: 74 90 117;
+  --c-ink-faint-rgb: 90 107 133;
+  --c-gold-ink-rgb: 156 101 32;
+  --c-cyan-ink-rgb: 14 116 144;
+
+  --c-shadow: 0 10px 40px -12px rgba(15, 23, 42, 0.13);
+  --c-shadow-lift: 0 34px 70px -28px rgba(15, 23, 42, 0.22);
+
+  --c-grid: rgba(15, 23, 42, 0.05);
+  --c-glass: rgba(255, 255, 255, 0.78);
+  --c-glow-gold: rgba(248, 194, 78, 0.3);
+  --c-glow-cyan: rgba(45, 217, 240, 0.26);
+  --c-scrim: rgba(15, 23, 42, 0.55);
+  --c-text-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+
+  --c-body-glow-a: rgba(248, 194, 78, 0.16);
+  --c-body-glow-b: rgba(45, 217, 240, 0.13);
+  --c-body-glow-c: rgba(255, 122, 47, 0.1);
+
+  --c-scroll-track: #e7ecf5;
+  --c-grain-blend: multiply;
+  --c-grain-opacity: 0.16;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --c-surface: #04060d;
+  --c-surface-2: #070b16;
+  --c-surface-3: #0e1528;
+
+  --c-ink: #ffffff;
+  --c-ink-soft: #cbd5e1;
+  --c-ink-mute: #94a3b8;
+  --c-ink-faint: #7c8ba3;
+
+  --c-line: rgba(255, 255, 255, 0.1);
+  --c-line-soft: rgba(255, 255, 255, 0.06);
+
+  --c-gold-ink: #ffd469;
+  --c-cyan-ink: #2dd9f0;
+
+  /* Channel twins - see the note in :root above. */
+  --c-surface-rgb: 4 6 13;
+  --c-surface-2-rgb: 7 11 22;
+  --c-surface-3-rgb: 14 21 40;
+  --c-ink-rgb: 255 255 255;
+  --c-ink-soft-rgb: 203 213 225;
+  --c-ink-mute-rgb: 148 163 184;
+  --c-ink-faint-rgb: 124 139 163;
+  --c-gold-ink-rgb: 255 212 105;
+  --c-cyan-ink-rgb: 45 217 240;
+
+  --c-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.65);
+  --c-shadow-lift: 0 34px 70px -28px rgba(0, 0, 0, 0.85);
+
+  --c-grid: rgba(255, 255, 255, 0.045);
+  --c-glass: rgba(7, 11, 22, 0.72);
+  --c-glow-gold: rgba(248, 194, 78, 0.25);
+  --c-glow-cyan: rgba(45, 217, 240, 0.25);
+  --c-scrim: rgba(4, 6, 13, 0.86);
+  --c-text-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+
+  --c-body-glow-a: rgba(248, 194, 78, 0.14);
+  --c-body-glow-b: rgba(45, 217, 240, 0.12);
+  --c-body-glow-c: rgba(255, 122, 47, 0.1);
+
+  --c-scroll-track: #04060d;
+  --c-grain-blend: overlay;
+  --c-grain-opacity: 0.4;
+}
+
+/* ============================================================
+   BASE / RESET
+   ============================================================ */
+@layer base {
+  :root {
+    --nav-h: 5rem;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-surface font-sans text-ink-soft antialiased;
+    background-image: radial-gradient(
+        1200px 700px at 88% -8%,
+        var(--c-body-glow-a),
+        transparent 60%
+      ),
+      radial-gradient(1000px 620px at 6% 8%, var(--c-body-glow-b), transparent 62%),
+      radial-gradient(900px 900px at 50% 108%, var(--c-body-glow-c), transparent 60%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+
+  ::selection {
+    background: rgba(248, 194, 78, 0.85);
+    color: #070b16;
+  }
+
+  /* Latin numerals / english fragments stay LTR inside RTL text */
+  .latin {
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline-block;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Slim, brand-tinted scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--c-scroll-track);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #f8c24e, #c9852a);
+    border-radius: 999px;
+    border: 2px solid var(--c-scroll-track);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #2dd9f0, #49b6ff);
+  }
+}
+
+/* ============================================================
+   COMPONENT UTILITIES
+   ============================================================ */
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-[1240px] px-5 sm:px-7 lg:px-10;
+  }
+
+  .glass {
+    @apply border border-line bg-surface-2/70 backdrop-blur-xl;
+  }
+
+  /* Gold gradient text */
+  .text-gold-gradient {
+    background-image: linear-gradient(110deg, #fff0c9, #f8c24e 40%, #eaa93a 70%, #fff0c9);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-cyan-gradient {
+    background-image: linear-gradient(110deg, #b6f05a, #2dd9f0 45%, #49b6ff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Primary CTA — gold, with a sweeping shine on hover */
+  .btn-gold {
+    @apply relative isolate inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full px-7 py-3.5 text-sm font-bold text-night-950 transition-all duration-300;
+    background-image: linear-gradient(135deg, #ffe49b, #f8c24e 45%, #eaa93a);
+    box-shadow: 0 14px 34px -14px rgba(248, 194, 78, 0.75);
+  }
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 50px -14px rgba(248, 194, 78, 0.95);
+  }
+  .btn-gold::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: -60%;
+    width: 42%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+    transform: skewX(-18deg);
+    transition: inset-inline-start 0.65s ease;
+  }
+  .btn-gold:hover::after {
+    inset-inline-start: 130%;
+  }
+
+  /* Secondary CTA — outlined. In Light mode it needs a darker resting
+     text colour and a visible border, since white-on-white won't read. */
+  .btn-ghost {
+    @apply relative inline-flex items-center justify-center gap-2.5 rounded-full border border-line bg-ink/[0.03] px-7 py-3.5 text-sm font-semibold text-ink-soft backdrop-blur-md transition-all duration-300;
+  }
+  .btn-ghost:hover {
+    @apply border-cyan-ink/50 bg-cyan-ink/10 text-cyan-ink;
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px -18px var(--c-glow-cyan);
+  }
+
+  /* Section label pill */
+  .eyebrow {
+    @apply inline-flex items-center gap-2.5 rounded-full border border-gold-400/25 bg-gold-400/[0.07] px-4 py-1.5 text-xs font-bold tracking-wide text-gold-ink;
+  }
+
+  /* Animated gradient hairline used as a divider / ring */
+  .hairline {
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgba(248, 194, 78, 0.55),
+      rgba(45, 217, 240, 0.45),
+      transparent
+    );
+  }
+
+  .card-surface {
+    @apply relative rounded-3xl border border-line bg-surface-2 backdrop-blur-sm;
+  }
+
+  /* Spotlight that follows the pointer — coordinates set from JS */
+  .spotlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      340px circle at var(--mx, 50%) var(--my, 0%),
+      var(--c-glow-gold),
+      transparent 68%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+  .spotlight:hover::before {
+    opacity: 1;
+  }
+
+  /* Conic gradient border that spins on hover */
+  .ring-spin {
+    position: relative;
+  }
+  .ring-spin::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--ang, 0deg),
+      transparent 0deg,
+      rgba(248, 194, 78, 0.9) 60deg,
+      rgba(45, 217, 240, 0.8) 130deg,
+      transparent 200deg,
+      transparent 360deg
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .ring-spin:hover::before,
+  .ring-spin:focus-visible::before {
+    opacity: 1;
+    animation: spin-border 4s linear infinite;
+  }
+
+  .field {
+    @apply w-full rounded-2xl border border-line bg-surface-3 px-4 py-3.5 text-sm text-ink outline-none transition-all duration-300 placeholder:text-ink-faint;
+  }
+  .field:focus {
+    @apply border-gold-400/60 bg-surface-2;
+    box-shadow: 0 0 0 4px rgba(248, 194, 78, 0.12);
+  }
+}
+
+@layer utilities {
+  /* Marquee edge fade */
+  .mask-edges {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 9%,
+      #000 91%,
+      transparent
+    );
+    mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
+  }
+
+  .mask-edges-y {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+  }
+
+  /* Film-grain overlay for a premium, printed feel.
+     Blend mode + strength come from the theme tokens so the grain
+     stays subtle on light surfaces instead of turning them muddy. */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: var(--c-grain-opacity);
+    mix-blend-mode: var(--c-grain-blend);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  }
+
+  .text-shadow-deep {
+    text-shadow: var(--c-text-shadow, 0 18px 40px rgba(0, 0, 0, 0.7));
+  }
+
+  .writing-vertical {
+    writing-mode: vertical-rl;
+  }
+
+  @keyframes spin-border {
+    to {
+      --ang: 360deg;
+    }
+  }
+}
+
+/* Respect users who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

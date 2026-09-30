@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070B16" />
+
+    <title>أحمد جويدة | Gwida Design - مصمم جرافيك وخطاط</title>
+    <meta
+      name="description"
+      content="أحمد جويدة — مصمم جرافيك، رسام ديجيتال وخطاط عربي بخبرة أكثر من 20 عاماً. تصميم لافتات إعلانية، مطبوعات ورقية، محتوى سوشيال ميديا، وهويات بصرية."
+    />
+    <meta name="author" content="Ahmed Gwida" />
+    <meta name="keywords" content="مصمم جرافيك, خطاط, رسام ديجيتال, تصميم لافتات, هوية بصرية, أحمد جويدة, Gwida Design" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ar_AR" />
+    <meta property="og:title" content="أحمد جويدة | Gwida Design" />
+    <meta
+      property="og:description"
+      content="أكثر من 20 عاماً من الشغف.. حيث يتحول التصميم إلى فن، والفن إلى هوية."
+    />
+    <meta property="og:image" content="portfolio-assets/الصورة%20الشخصية.png" />
+
+    <link rel="icon" type="image/png" href="/logo.png" />
+
+    <!--
+      Theme bootstrap: resolve the stored preference and set `.dark` on <html>
+      BEFORE first paint. Without this the page would render light and then
+      snap to dark once React mounts. Mirrors THEME_KEY / applyTheme() in
+      src/hooks/index.js — keep the key in sync.
+    -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('gwida-theme')
+          var theme =
+            saved === 'light' || saved === 'dark'
+              ? saved
+              : 'dark' /* Midnight Atelier is the default */
+          var root = document.documentElement
+          root.classList.toggle('dark', theme === 'dark')
+          root.style.colorScheme = theme
+          var meta = document.querySelector('meta[name="theme-color"]')
+          if (meta) meta.setAttribute('content', theme === 'dark' ? '#070B16' : '#F5F7FB')
+        } catch (e) {
+          document.documentElement.classList.add('dark')
+        }
+      })()
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
