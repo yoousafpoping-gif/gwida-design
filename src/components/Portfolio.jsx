@@ -8,10 +8,16 @@ import { useLightbox, scrollToSection } from '../hooks/index.js'
 import { ArrowIcon, SparkIcon } from './ui/Icons.jsx'
 
 /* How many items the main page shows before the "view all" button.
-   Menus get a smaller slice because each one is a front+back PAIR,
-   so a menu row already contains two full-size pieces of artwork. */
+   Each limit is a multiple of its own column count, so the masonry
+   fills evenly and never leaves a lopsided last row:
+
+     PREVIEW_LIMIT  -> Gallery       : md:2 / lg:3 columns -> 6 = 2x3
+     MENU_PREVIEW_LIMIT -> MenuGallery: sm:2 columns        -> 4 = 2x2
+
+   Menus also get a smaller slice because each one is a front+back PAIR,
+   so a menu card already contains two full-size pieces of artwork. */
 const PREVIEW_LIMIT = 6
-const MENU_PREVIEW_LIMIT = 3
+const MENU_PREVIEW_LIMIT = 4
 
 /* ------------------------------------------------------------------ *
  * Gallery card
