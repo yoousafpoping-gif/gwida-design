@@ -50,7 +50,7 @@ function Card({ item, onOpen, index }) {
         delay: Math.min(index * 0.04, 0.4),
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="group mb-5 break-inside-avoid overflow-hidden rounded-3xl border border-line bg-surface-2 shadow-glass transition-all duration-500 hover:-translate-y-1.5 hover:border-gold-ink/45 hover:shadow-lift"
+      className="group mb-5 cursor-zoom-in break-inside-avoid overflow-hidden rounded-3xl border border-line bg-surface-2 shadow-glass transition-all duration-500 hover:-translate-y-1.5 hover:border-gold-ink/45 hover:shadow-lift"
     >
       <button
         onClick={() => onOpen(item)}
@@ -90,7 +90,7 @@ function Card({ item, onOpen, index }) {
               onError={() => setFailed(true)}
               /* h-auto + w-full + object-contain => full image, no crop,
                  no distortion, height driven purely by intrinsic ratio. */
-              className={`block h-auto w-full object-contain transition-opacity duration-700 ${
+              className={`block h-auto w-full cursor-zoom-in object-contain transition-opacity duration-700 ${
                 loaded ? 'opacity-100' : 'opacity-0'
               }`}
             />
@@ -187,7 +187,7 @@ function MenuSide({ image, caption, side, onOpen, index }) {
   const ratio = `${image.width} / ${image.height}`
 
   return (
-    <figure className="group overflow-hidden rounded-2xl border border-line bg-surface-2 shadow-glass transition-all duration-500 hover:-translate-y-1 hover:border-gold-ink/45 hover:shadow-lift">
+    <figure className="group cursor-zoom-in overflow-hidden rounded-2xl border border-line bg-surface-2 shadow-glass transition-all duration-500 hover:-translate-y-1 hover:border-gold-ink/45 hover:shadow-lift">
       <button
         onClick={() => onOpen(image)}
         className="block w-full cursor-zoom-in text-start"
@@ -219,7 +219,7 @@ function MenuSide({ image, caption, side, onOpen, index }) {
               decoding="async"
               onLoad={() => setLoaded(true)}
               onError={() => setFailed(true)}
-              className={`block h-auto w-full object-contain transition-opacity duration-700 ${
+              className={`block h-auto w-full cursor-zoom-in object-contain transition-opacity duration-700 ${
                 loaded ? 'opacity-100' : 'opacity-0'
               }`}
             />
@@ -292,7 +292,7 @@ function MenuGallery({ menus }) {
               delay: Math.min(i * 0.05, 0.35),
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="mb-6 inline-block w-full break-inside-avoid overflow-hidden rounded-3xl border border-line bg-surface-2/60 p-4 shadow-glass sm:p-5"
+            className="mb-6 inline-block w-full cursor-zoom-in break-inside-avoid overflow-hidden rounded-3xl border border-line bg-surface-2/60 p-4 shadow-glass sm:p-5"
           >
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <span className="inline-flex items-center gap-2">
