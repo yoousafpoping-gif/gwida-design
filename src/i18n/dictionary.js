@@ -126,6 +126,12 @@ export const DICT = {
     'portfolio.sections.infographic.desc':
       'معلومات معقّدة مبسّطة في تصميم واحد — أرقام ومقارنات تُفهم في ثوانٍ.',
     'portfolio.sections.infographic.cta': 'عرض كافة أعمال الإنفوجرافيك',
+    'portfolio.sections.digital-art.eyebrow': 'رسم ديجيتال',
+    'portfolio.sections.digital-art.titleA': 'الرسم',
+    'portfolio.sections.digital-art.titleB': 'الديجيتال',
+    'portfolio.sections.digital-art.desc':
+      'لوحات مرسومة رقميّاً بلمسة فنية تجمع بين الخيال والدقة في التفاصيل.',
+    'portfolio.sections.digital-art.cta': 'عرض كافة أعمال الرسم الديجيتال',
     'portfolio.sections.menus.eyebrow': 'مطبوعات',
     'portfolio.sections.menus.titleA': 'المطبوعات',
     'portfolio.sections.menus.titleB': 'والمنيوهات',
@@ -309,6 +315,12 @@ export const DICT = {
     'portfolio.sections.infographic.desc':
       'Complex information simplified into a single design — numbers and comparisons understood in seconds.',
     'portfolio.sections.infographic.cta': 'View all infographic work',
+    'portfolio.sections.digital-art.eyebrow': 'Digital art',
+    'portfolio.sections.digital-art.titleA': 'Digital',
+    'portfolio.sections.digital-art.titleB': 'Paintings',
+    'portfolio.sections.digital-art.desc':
+      'Digitally painted artworks that blend imagination with precise, expressive detail.',
+    'portfolio.sections.digital-art.cta': 'View all digital art',
     'portfolio.sections.menus.eyebrow': 'Print',
     'portfolio.sections.menus.titleA': 'Prints',
     'portfolio.sections.menus.titleB': '& Menus',

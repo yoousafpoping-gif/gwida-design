@@ -54,7 +54,7 @@ function Card({ item, onOpen, index }) {
     >
       <button
         onClick={() => onOpen(item)}
-        className="block w-full text-start"
+        className="block w-full cursor-zoom-in text-start"
         aria-label={t('portfolio.ariaView', { name: title })}
       >
         {/* ---------- Image area (uncropped) ---------- */}
@@ -190,7 +190,7 @@ function MenuSide({ image, caption, side, onOpen, index }) {
     <figure className="group overflow-hidden rounded-2xl border border-line bg-surface-2 shadow-glass transition-all duration-500 hover:-translate-y-1 hover:border-gold-ink/45 hover:shadow-lift">
       <button
         onClick={() => onOpen(image)}
-        className="block w-full text-start"
+        className="block w-full cursor-zoom-in text-start"
         aria-label={t('portfolio.ariaView', { name: caption })}
       >
         <div className="relative w-full overflow-hidden bg-surface-3">
@@ -355,11 +355,12 @@ function MenuGallery({ menus }) {
 }
 
 /**
- * The four dedicated gallery groups, stacked vertically in display
- * order: signage -> social media -> infographics -> print & menus.
- * All copy lives in the dictionary under `portfolio.sections.<id>.*`.
- * `hasHighlight` marks the three groups whose title splits into two
- * lines — the infographic heading is a single line and has no `titleB`.
+ * The five dedicated gallery groups, stacked vertically in display
+ * order: signage -> social media -> infographics -> digital art ->
+ * print & menus. All copy lives in the dictionary under
+ * `portfolio.sections.<id>.*`. `hasHighlight` marks the groups whose
+ * title splits into two lines — the infographic heading is a single
+ * line and has no `titleB`.
  */
 const GROUPS = [
   {
@@ -379,6 +380,12 @@ const GROUPS = [
     anchor: 'portfolio-infographic',
     source: 'projects',
     hasHighlight: false,
+  },
+  {
+    id: 'digital-art',
+    anchor: 'portfolio-digital-art',
+    source: 'projects',
+    hasHighlight: true,
   },
   {
     id: 'menus',

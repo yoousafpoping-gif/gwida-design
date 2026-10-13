@@ -54,6 +54,7 @@ export const CATEGORIES = [
   { id: 'signage', label: 'تصميم لافتات', enLabel: 'Signage' },
   { id: 'social', label: 'سوشيال ميديا', enLabel: 'Social Media' },
   { id: 'infographic', label: 'إنفوجرافيك', enLabel: 'Infographics' },
+  { id: 'digital-art', label: 'رسم ديجيتال', enLabel: 'Digital Art' },
   { id: 'menus', label: 'المطبوعات والمنيوهات', enLabel: 'Print & Menus' },
 ]
 
@@ -62,6 +63,7 @@ const CATEGORY_IDS = {
   'تصميم لافتات': 'signage',
   'سوشيال ميديا': 'social',
   'إنفوجرافيك': 'infographic',
+  'رسم ديجيتال': 'digital-art',
   'المطبوعات والمنيوهات': 'menus',
 }
 
@@ -107,6 +109,9 @@ const portfolioData = [
   { image: 'portfolio-assets/سوشيال ميديا/فول نور 3.webp', category: 'سوشيال ميديا', badgeColor: 'bg-cyan-500', title: 'الطعم بتاع زمان', enTitle: 'The Taste of the Old Days', enDesc: 'A focus on ingredient quality and clean presentation to build customer trust in a popular product.', description: 'التركيز على جودة المكونات ونظافة التقديم لتعزيز ثقة العميل في المنتج الشعبي.' },
   { image: 'portfolio-assets/سوشيال ميديا/فول نور 4.webp', category: 'سوشيال ميديا', badgeColor: 'bg-cyan-500', title: 'مزاج الجمهور', enTitle: 'Audience Mood', enDesc: 'A visual composition highlighting the range of side dishes that complete the main meal.', description: 'تكوين بصري يبرز تنوع الأصناف الجانبية التي تكمل الوجبة الأساسية.' },
   { image: 'portfolio-assets/سوشيال ميديا/فول نور 5.webp', category: 'سوشيال ميديا', badgeColor: 'bg-cyan-500', title: 'أصلي مصري', enTitle: 'Authentically Egyptian', enDesc: 'A visual identity reflecting Egyptian heritage and tradition, using lively colours and bold type.', description: 'هوية بصرية تعكس الأصالة والتراث المصري باستخدام ألوان حيوية ونصوص جريئة.' },
+  { image: 'portfolio-assets/digital-art/digital-art-1.webp', category: 'رسم ديجيتال', badgeColor: 'bg-fuchsia-500', title: 'رسم ديجيتال ١', enTitle: 'Digital Painting 1', enDesc: 'A digitally painted artwork with a creative artistic spirit and fine, expressive detail.', description: 'لوحة مرسومة رقميّاً بروح فنية إبداعية وتفاصيل دقيقة ومعبّرة.' },
+  { image: 'portfolio-assets/digital-art/digital-art-2.webp', category: 'رسم ديجيتال', badgeColor: 'bg-fuchsia-500', title: 'رسم ديجيتال ٢', enTitle: 'Digital Painting 2', enDesc: 'A digital painting blending colour and line into a distinctive visual composition.', description: 'رسم ديجيتال يمزج بين اللون والخط في تكوين بصري مميّز.' },
+  { image: 'portfolio-assets/digital-art/digital-art-3.webp', category: 'رسم ديجيتال', badgeColor: 'bg-fuchsia-500', title: 'رسم ديجيتال ٣', enTitle: 'Digital Painting 3', enDesc: 'A high-resolution digital artwork crafted with a rich, artistic touch.', description: 'عمل فني رقمي عالي الدقة مصنوع بلمسة فنية غنية.' },
 ]
 
 /* ============================================================
@@ -125,6 +130,9 @@ const DIMENSIONS = {
   'ميدلينك': [1033, 1033],
   'فول نور': [1033, 1033],
   'عمرة المولد النبوي': [1033, 1292],
+  'digital-art-1': [1240, 1772],
+  'digital-art-2': [1134, 1457],
+  'digital-art-3': [2480, 3508],
 }
 
 /** Resolves [w, h] for a portfolio asset path. Falls back to 4:3. */
