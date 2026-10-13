@@ -115,7 +115,7 @@ const portfolioData = [
   { image: 'portfolio-assets/digital-art/digital-art-3.webp', category: 'الرسم', badgeColor: 'bg-fuchsia-500', title: 'رسم ديجيتال ٣', enTitle: 'Digital Painting 3', enDesc: 'A high-resolution digital artwork crafted with a rich, artistic touch.', description: 'عمل فني رقمي عالي الدقة مصنوع بلمسة فنية غنية.' },
   { image: 'portfolio-assets/calligraphy/calligraphy-1.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'الزياد بالخط العربي', enTitle: 'Al-Ziyad Calligraphy', enDesc: 'A lettering logo for "Al-Ziyad" with an authentic Arabic calligraphy touch that balances strength and harmony.', description: 'شعار خطّي باسم «الزياد» بلمسة خط عربي أصيلة تجمع بين القوة والاتزان.' },
   { image: 'portfolio-assets/calligraphy/calligraphy-2.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'احمد جويدة بالخط العربي', enTitle: 'Ahmed Gwida Calligraphy', enDesc: 'A calligraphic composition of the name "Ahmed Gwida" in carefully crafted Arabic letterforms.', description: 'تكوين خطّي يحمل اسم «أحمد جويدة» بحروف عربية مصمّمة بعناية.' },
-  { image: 'portfolio-assets/calligraphy/calligraphy-3.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'روزتي بالخط العربي', enTitle: 'Rosetti Calligraphy', enDesc: 'A lettering logo for "Rosetti" that pairs soft letterforms with an elegant composition.', description: 'شعار خطّي باسم «روزتي» يجمع بين نعومة الحروف وأناقة التكوين.' },
+  { image: 'portfolio-assets/calligraphy/rosetti-new.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'روزتي بالخط العربي', enTitle: 'Rosetti Calligraphy', enDesc: 'A lettering logo for "Rosetti" that pairs soft letterforms with an elegant composition.', description: 'شعار خطّي باسم «روزتي» يجمع بين نعومة الحروف وأناقة التكوين.' },
 ]
 
 /* ============================================================
@@ -139,7 +139,7 @@ const DIMENSIONS = {
   'digital-art-3': [2480, 3508],
   'calligraphy-1': [2000, 2000],
   'calligraphy-2': [2000, 2000],
-  'calligraphy-3': [2000, 2000],
+  'rosetti-new': [937, 834],
 }
 
 /** Resolves [w, h] for a portfolio asset path. Falls back to 4:3. */
