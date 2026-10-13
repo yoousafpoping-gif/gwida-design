@@ -4,7 +4,7 @@
    Spaces / parentheses are percent-encoded once via encodeURI().
    ============================================================ */
 
-export const PROFILE_IMG = encodeURI('portfolio-assets/الصورة الشخصية.webp')
+export const PROFILE_IMG = '/portfolio-assets/profile.jpg'
 
 export const asset = (p) => encodeURI(p)
 

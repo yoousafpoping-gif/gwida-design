@@ -35,7 +35,7 @@ npm run preview  # serve the production build locally
 ├── postcss.config.js
 ├── public/
 │   └── portfolio-assets/       # all images (already in place)
-│       ├── الصورة الشخصية.png
+│       ├── profile.jpg
 │       ├── تصميم يافطة (1..12).jpg
 │       ├── انفوجرافيك 1..5.jpg
 │       └── سوشيال ميديا/
