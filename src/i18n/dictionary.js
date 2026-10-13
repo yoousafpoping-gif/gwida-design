@@ -97,7 +97,7 @@ export const DICT = {
     'portfolio.titleA': 'نماذج من',
     'portfolio.titleB': 'أعمالي',
     'portfolio.desc':
-      'لافتات إعلانية، محتوى سوشيال ميديا، إنفوجرافيك، ومطبوعات ومنيوهات — كل نوع في قسم مستقل. كل تصميم معروض بكامله دون أي قص أو تشويه.',
+      'خط عربي، رسم ديجيتال، لافتات إعلانية، سوشيال ميديا، إنفوجرافيك، ومطبوعات ومنيوهات — كل نوع في قسم مستقل. كل تصميم معروض بكامله دون أي قص أو تشويه.',
     'portfolio.back': 'العودة إلى المعرض',
     'portfolio.projectShown': 'مشروع معروض',
     'portfolio.jumpAria': 'أقسام المعرض',
@@ -109,35 +109,41 @@ export const DICT = {
     'portfolio.menuFront': 'وش',
     'portfolio.menuBack': 'ضهر',
     'portfolio.menuShown': 'مينيو معروض',
+    'portfolio.sections.calligraphy.eyebrow': 'خط عربي',
+    'portfolio.sections.calligraphy.titleA': 'الخط',
+    'portfolio.sections.calligraphy.titleB': 'العربي',
+    'portfolio.sections.calligraphy.desc':
+      'أعمال خط عربي مرسومة بلمسة أصيلة — شعارات وتكوينات خطية تجمع بين الأصالة والمعاصرة.',
+    'portfolio.sections.calligraphy.cta': 'عرض كافة أعمال الخط العربي',
     'portfolio.sections.signage.eyebrow': 'لافتات',
     'portfolio.sections.signage.titleA': 'تصميم اللافتات',
     'portfolio.sections.signage.titleB': 'الإعلانية',
     'portfolio.sections.signage.desc':
       'لافتات للمحلات والمطاعم والمشاريع التجارية — تصاميم واضحة تُقرأ من بعيد وتُبرز اسم المشروع.',
     'portfolio.sections.signage.cta': 'عرض كافة تصميمات اللافتات',
-    'portfolio.sections.social.eyebrow': 'محتوى رقمي',
-    'portfolio.sections.social.titleA': 'تصميمات',
-    'portfolio.sections.social.titleB': 'السوشيال ميديا',
-    'portfolio.sections.social.desc':
+    'portfolio.sections.social-media.eyebrow': 'محتوى رقمي',
+    'portfolio.sections.social-media.titleA': 'تصميمات',
+    'portfolio.sections.social-media.titleB': 'السوشيال ميديا',
+    'portfolio.sections.social-media.desc':
       'منشورات ورادي للمتاجر والصفحات — محتوى بصري متسق يحافظ على هوية الماركة في كل منشور.',
-    'portfolio.sections.social.cta': 'عرض كافة أعمال السوشيال ميديا',
-    'portfolio.sections.infographic.eyebrow': 'تبسيط المعلومة',
-    'portfolio.sections.infographic.titleA': 'الإنفوجرافيك',
-    'portfolio.sections.infographic.desc':
+    'portfolio.sections.social-media.cta': 'عرض كافة أعمال السوشيال ميديا',
+    'portfolio.sections.infographics.eyebrow': 'تبسيط المعلومة',
+    'portfolio.sections.infographics.titleA': 'الإنفوجرافيك',
+    'portfolio.sections.infographics.desc':
       'معلومات معقّدة مبسّطة في تصميم واحد — أرقام ومقارنات تُفهم في ثوانٍ.',
-    'portfolio.sections.infographic.cta': 'عرض كافة أعمال الإنفوجرافيك',
+    'portfolio.sections.infographics.cta': 'عرض كافة أعمال الإنفوجرافيك',
     'portfolio.sections.digital-art.eyebrow': 'رسم ديجيتال',
     'portfolio.sections.digital-art.titleA': 'الرسم',
     'portfolio.sections.digital-art.titleB': 'الديجيتال',
     'portfolio.sections.digital-art.desc':
       'لوحات مرسومة رقميّاً بلمسة فنية تجمع بين الخيال والدقة في التفاصيل.',
     'portfolio.sections.digital-art.cta': 'عرض كافة أعمال الرسم الديجيتال',
-    'portfolio.sections.menus.eyebrow': 'مطبوعات',
-    'portfolio.sections.menus.titleA': 'المطبوعات',
-    'portfolio.sections.menus.titleB': 'والمنيوهات',
-    'portfolio.sections.menus.desc':
+    'portfolio.sections.prints-menus.eyebrow': 'مطبوعات',
+    'portfolio.sections.prints-menus.titleA': 'المطبوعات',
+    'portfolio.sections.prints-menus.titleB': 'والمنيوهات',
+    'portfolio.sections.prints-menus.desc':
       'مينيوهات مطاعم وفلايرات مطبوعة — الوش والضهر معروضان جنباً إلى جنب كما يُطبعان فعلياً.',
-    'portfolio.sections.menus.cta': 'عرض كافة المطبوعات والمنيوهات',
+    'portfolio.sections.prints-menus.cta': 'عرض كافة المطبوعات والمنيوهات',
 
     'contact.greeting': 'السلام عليكم 👋',
     'contact.intro': 'أرغب بمناقشة مشروع تصميم جديد مع Gwida Design.',
@@ -287,7 +293,7 @@ export const DICT = {
     'portfolio.titleA': 'A selection of',
     'portfolio.titleB': 'my work',
     'portfolio.desc':
-      'Advertising signage, social media content, infographics, and prints & menus — each type in its own section. Every design is shown in full, with no cropping or distortion.',
+      'Arabic calligraphy, digital art, advertising signage, social media, infographics, and prints & menus — each type in its own section. Every design is shown in full, with no cropping or distortion.',
     'portfolio.back': 'Back to gallery',
     'portfolio.projectShown': 'projects shown',
     'portfolio.jumpAria': 'Portfolio sections',
@@ -299,35 +305,41 @@ export const DICT = {
     'portfolio.menuFront': 'Front',
     'portfolio.menuBack': 'Back',
     'portfolio.menuShown': 'menus shown',
+    'portfolio.sections.calligraphy.eyebrow': 'Arabic calligraphy',
+    'portfolio.sections.calligraphy.titleA': 'Arabic',
+    'portfolio.sections.calligraphy.titleB': 'Calligraphy',
+    'portfolio.sections.calligraphy.desc':
+      'Hand-crafted Arabic calligraphy pieces with an authentic touch — lettering and logos that blend tradition with a modern feel.',
+    'portfolio.sections.calligraphy.cta': 'View all calligraphy work',
     'portfolio.sections.signage.eyebrow': 'Signage',
     'portfolio.sections.signage.titleA': 'Advertising',
     'portfolio.sections.signage.titleB': 'Signage Design',
     'portfolio.sections.signage.desc':
       'Signage for shops, restaurants and commercial projects — clear designs that read from a distance and make the business name stand out.',
     'portfolio.sections.signage.cta': 'View all signage designs',
-    'portfolio.sections.social.eyebrow': 'Digital content',
-    'portfolio.sections.social.titleA': 'Social Media',
-    'portfolio.sections.social.titleB': 'Designs',
-    'portfolio.sections.social.desc':
+    'portfolio.sections.social-media.eyebrow': 'Digital content',
+    'portfolio.sections.social-media.titleA': 'Social Media',
+    'portfolio.sections.social-media.titleB': 'Designs',
+    'portfolio.sections.social-media.desc':
       'Ready-made posts for stores and pages — consistent visual content that keeps the brand identity intact in every post.',
-    'portfolio.sections.social.cta': 'View all social media work',
-    'portfolio.sections.infographic.eyebrow': 'Simplifying information',
-    'portfolio.sections.infographic.titleA': 'Infographics',
-    'portfolio.sections.infographic.desc':
+    'portfolio.sections.social-media.cta': 'View all social media work',
+    'portfolio.sections.infographics.eyebrow': 'Simplifying information',
+    'portfolio.sections.infographics.titleA': 'Infographics',
+    'portfolio.sections.infographics.desc':
       'Complex information simplified into a single design — numbers and comparisons understood in seconds.',
-    'portfolio.sections.infographic.cta': 'View all infographic work',
+    'portfolio.sections.infographics.cta': 'View all infographic work',
     'portfolio.sections.digital-art.eyebrow': 'Digital art',
     'portfolio.sections.digital-art.titleA': 'Digital',
     'portfolio.sections.digital-art.titleB': 'Paintings',
     'portfolio.sections.digital-art.desc':
       'Digitally painted artworks that blend imagination with precise, expressive detail.',
     'portfolio.sections.digital-art.cta': 'View all digital art',
-    'portfolio.sections.menus.eyebrow': 'Print',
-    'portfolio.sections.menus.titleA': 'Prints',
-    'portfolio.sections.menus.titleB': '& Menus',
-    'portfolio.sections.menus.desc':
+    'portfolio.sections.prints-menus.eyebrow': 'Print',
+    'portfolio.sections.prints-menus.titleA': 'Prints',
+    'portfolio.sections.prints-menus.titleB': '& Menus',
+    'portfolio.sections.prints-menus.desc':
       'Restaurant menus and printed flyers — front and back shown side by side exactly as they are printed.',
-    'portfolio.sections.menus.cta': 'View all prints and menus',
+    'portfolio.sections.prints-menus.cta': 'View all prints and menus',
 
     'contact.greeting': 'Hello 👋',
     'contact.intro': 'I would like to discuss a new design project with Gwida Design.',

@@ -355,31 +355,19 @@ function MenuGallery({ menus }) {
 }
 
 /**
- * The five dedicated gallery groups, stacked vertically in display
- * order: signage -> social media -> infographics -> digital art ->
- * print & menus. All copy lives in the dictionary under
+ * The six dedicated gallery groups, stacked vertically in display
+ * order: calligraphy -> digital art -> social media -> infographics ->
+ * print & menus -> signage. All copy lives in the dictionary under
  * `portfolio.sections.<id>.*`. `hasHighlight` marks the groups whose
  * title splits into two lines — the infographic heading is a single
  * line and has no `titleB`.
  */
 const GROUPS = [
   {
-    id: 'signage',
-    anchor: 'portfolio-signage',
+    id: 'calligraphy',
+    anchor: 'portfolio-calligraphy',
     source: 'projects',
     hasHighlight: true,
-  },
-  {
-    id: 'social',
-    anchor: 'portfolio-social',
-    source: 'projects',
-    hasHighlight: true,
-  },
-  {
-    id: 'infographic',
-    anchor: 'portfolio-infographic',
-    source: 'projects',
-    hasHighlight: false,
   },
   {
     id: 'digital-art',
@@ -388,9 +376,27 @@ const GROUPS = [
     hasHighlight: true,
   },
   {
-    id: 'menus',
-    anchor: 'portfolio-menus',
+    id: 'social-media',
+    anchor: 'portfolio-social-media',
+    source: 'projects',
+    hasHighlight: true,
+  },
+  {
+    id: 'infographics',
+    anchor: 'portfolio-infographics',
+    source: 'projects',
+    hasHighlight: false,
+  },
+  {
+    id: 'prints-menus',
+    anchor: 'portfolio-prints-menus',
     source: 'menus',
+    hasHighlight: true,
+  },
+  {
+    id: 'signage',
+    anchor: 'portfolio-signage',
+    source: 'projects',
     hasHighlight: true,
   },
 ]

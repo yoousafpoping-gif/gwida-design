@@ -6,7 +6,7 @@ export default {
   darkMode: 'class',
   // `badgeColor` values are data-driven strings, so Tailwind's scanner
   // cannot see them. They must be safelisted explicitly.
-  safelist: ['bg-yellow-500', 'bg-cyan-500', 'bg-orange-500'],
+  safelist: ['bg-yellow-500', 'bg-cyan-500', 'bg-orange-500', 'bg-fuchsia-500', 'bg-emerald-500', 'bg-amber-500'],
   theme: {
     extend: {
       fontFamily: {
