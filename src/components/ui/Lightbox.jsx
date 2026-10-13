@@ -9,21 +9,19 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
   const item = items[index]
 
   const [canHover, setCanHover] = useState(false)
-  const [magnify, setMagnify] = useState(false)
+  const [isZoomEnabled, setIsZoomEnabled] = useState(false)
 
   const imgRef = useRef(null)
   const lensRef = useRef(null)
   const rafRef = useRef(0)
 
-  /* A real magnifier cursor only makes sense for a fine pointer that can
-     hover. Touch devices fall back to the browser's native pinch zoom. */
+  /* The magnifier is OFF by default and only offered on a fine pointer that
+     can hover; touch devices fall back to the browser's native pinch zoom.
+     Turning it on is always a deliberate click of the toggle button. */
   useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return
     const mq = window.matchMedia('(hover: hover) and (pointer: fine)')
-    const apply = () => {
-      setCanHover(mq.matches)
-      setMagnify(mq.matches)
-    }
+    const apply = () => setCanHover(mq.matches)
     apply()
     mq.addEventListener('change', apply)
     return () => mq.removeEventListener('change', apply)
@@ -76,7 +74,7 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
 
   if (!item) return null
 
-  const lensActive = canHover && magnify
+  const lensActive = canHover && isZoomEnabled
 
   return (
     <motion.div
@@ -90,20 +88,20 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
       aria-modal="true"
       aria-label={item.title}
     >
-      {lensActive && (
+      {canHover && (
         <button
           type="button"
           onClick={(e) => {
             e.stopPropagation()
-            setMagnify((v) => !v)
+            setIsZoomEnabled((v) => !v)
             hideLens()
           }}
-          aria-pressed={magnify}
+          aria-pressed={isZoomEnabled}
           aria-label={t('lightbox.magnify')}
           title={t('lightbox.magnify')}
           className={`absolute start-5 top-5 z-20 inline-flex items-center gap-2 rounded-2xl border px-3.5 py-2.5 text-xs font-bold transition-all duration-300 ${
-            magnify
-              ? 'border-gold-400/60 bg-gold-400/15 text-gold-ink shadow-[0_0_22px_-6px_rgba(248,194,78,0.85)]'
+            isZoomEnabled
+              ? 'border-gold-400 bg-gold-400 text-night-950 shadow-[0_0_24px_-6px_rgba(248,194,78,0.95)]'
               : 'border-line bg-ink/[0.06] text-ink-mute hover:border-gold-400/50 hover:text-ink'
           }`}
         >
