@@ -200,6 +200,7 @@ export const DICT = {
     'lightbox.close': 'إغلاق',
     'lightbox.prev': 'السابق',
     'lightbox.next': 'التالي',
+    'lightbox.magnify': 'عدسة مكبرة',
   },
 
   en: {
@@ -389,6 +390,7 @@ export const DICT = {
     'lightbox.close': 'Close',
     'lightbox.prev': 'Previous',
     'lightbox.next': 'Next',
+    'lightbox.magnify': 'Magnifier',
   },
 }
 
