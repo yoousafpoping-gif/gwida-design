@@ -9,7 +9,7 @@ import { useLightbox, scrollToSection } from '../hooks/index.js'
 import { ArrowIcon, SparkIcon } from './ui/Icons.jsx'
 
 /* How many items the main page shows before the "view all" button.
-   Each limit is a multiple of its own column count, so the masonry
+   Each limit is a multiple of its own column count, so the grid
    fills evenly and never leaves a lopsided last row:
 
      PREVIEW_LIMIT  -> Gallery       : md:2 / lg:3 columns -> 6 = 2x3
@@ -50,7 +50,7 @@ function Card({ item, onOpen, index }) {
         delay: Math.min(index * 0.04, 0.4),
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="group mb-5 cursor-zoom-in break-inside-avoid overflow-hidden rounded-3xl border border-line bg-surface-2 shadow-glass transition-all duration-500 hover:-translate-y-1.5 hover:border-gold-ink/45 hover:shadow-lift"
+      className="group cursor-zoom-in overflow-hidden rounded-3xl border border-line bg-surface-2 shadow-glass transition-all duration-500 hover:-translate-y-1.5 hover:border-gold-ink/45 hover:shadow-lift"
     >
       <button
         onClick={() => onOpen(item)}
@@ -140,9 +140,15 @@ function Card({ item, onOpen, index }) {
 }
 
 /* ------------------------------------------------------------------ *
- * Masonry gallery — one lightbox per group, so the arrow keys walk
+ * Grid gallery — one lightbox per group, so the arrow keys walk
  * only the projects of the section the visitor is actually viewing.
  * `limit` renders just the preview slice; omit it for the full view.
+ *
+ * Standard CSS Grid (NOT multi-column masonry): auto-placement follows
+ * the writing direction, so in RTL the first card sits at the top-right
+ * and each row fills leftwards. Items therefore appear strictly in the
+ * `items` array order, row by row, which keeps grouped designs (e.g.
+ * Umrah, then Midlink, then restaurants) physically together.
  * ------------------------------------------------------------------ */
 function Gallery({ items, limit }) {
   const shown = limit ? items.slice(0, limit) : items
@@ -153,9 +159,10 @@ function Gallery({ items, limit }) {
 
   return (
     <>
-      {/* CSS multi-column masonry: 1 / 2 / 3 columns.
-          Children opt out of column breaks via `break-inside-avoid`. */}
-      <div className="mt-9 columns-1 gap-5 md:columns-2 lg:columns-3">
+      {/* 1 / 2 / 3 cards per row in document order. `items-start` keeps
+          every card at its natural height instead of stretching shorter
+          cards to the tallest one in the row. */}
+      <div className="mt-9 grid grid-cols-1 items-start gap-5 md:grid-cols-2 lg:grid-cols-3">
         {shown.map((item, i) => (
           <Card key={item.id} item={item} onOpen={openItem} index={i} />
         ))}
