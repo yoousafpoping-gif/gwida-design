@@ -41,6 +41,26 @@ function sizeSort(items) {
   )
 }
 
+/* Home-page social covers: unlike the project groups (whose items each get
+   their own tile) a cover is brands[0]. The portrait covers are a different
+   shape from the square ones, so they are pulled to the front — in the order
+   the client asked for (العمرة، نماء، العلاج الطبيعي) — and the square covers
+   then keep SOCIAL_BRANDS order. */
+const SOCIAL_COVER_PRIORITY = ['umrah', 'namaa', 'care-center']
+function coverSort(brands) {
+  const band = (b) => {
+    const ratio = b.items[0].width / b.items[0].height
+    if (ratio < 0.92) return 0
+    if (ratio > 1.08) return 2
+    return 1
+  }
+  const rank = (b) => {
+    const i = SOCIAL_COVER_PRIORITY.indexOf(b.id)
+    return i === -1 ? SOCIAL_COVER_PRIORITY.length : i
+  }
+  return [...brands].sort((a, b) => band(a) - band(b) || rank(a) - rank(b))
+}
+
 /* ------------------------------------------------------------------ *
  * Gallery card
  * - The image is NEVER cropped: `h-auto w-full object-contain` lets
@@ -561,6 +581,11 @@ export default function Portfolio() {
     []
   )
 
+  /* Home-page covers, reordered so the tall/portrait covers (which are a
+     different shape from the square tiles) sit together at the front instead
+     of scattering through the grid and leaving awkward gaps. */
+  const socialCovers = useMemo(() => coverSort(socialBrands), [socialBrands])
+
   /* Per-category heading + CTA copy, all from `portfolio.sections.<id>`. */
   const sectionCopy = (g) => ({
     eyebrow: t(`portfolio.sections.${g.id}.eyebrow`),
@@ -721,7 +746,7 @@ export default function Portfolio() {
                   {menus ? (
                     <MenuGallery menus={preview} />
                   ) : isSocial ? (
-                    <SocialGallery brands={socialBrands} mode="covers" />
+                    <SocialGallery brands={socialCovers} mode="covers" />
                   ) : (
                     <Gallery items={g.items} limit={PREVIEW_LIMIT} />
                   )}
