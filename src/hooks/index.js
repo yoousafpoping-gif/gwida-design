@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { CLOSED_INDEX, closeIndex, isOpen, nextIndex, prevIndex } from '../components/ui/lightboxState.js'
 
 /**
  * Tracks which section is currently in view so the nav can highlight it.
@@ -129,15 +130,12 @@ export function useTheme() {
  * Arrow keys follow the RTL reading direction.
  */
 export function useLightbox(length) {
-  const [index, setIndex] = useState(-1)
-  const open = index >= 0 && length > 0
+  const [index, setIndex] = useState(CLOSED_INDEX)
+  const open = isOpen(index, length)
 
-  const close = useCallback(() => setIndex(-1), [])
-  const next = useCallback(() => setIndex((i) => (length ? (i + 1) % length : -1)), [length])
-  const prev = useCallback(
-    () => setIndex((i) => (length ? (i - 1 + length) % length : -1)),
-    [length]
-  )
+  const close = useCallback(() => setIndex(closeIndex()), [])
+  const next = useCallback(() => setIndex((i) => nextIndex(i, length)), [length])
+  const prev = useCallback(() => setIndex((i) => prevIndex(i, length)), [length])
 
   useEffect(() => {
     if (!open) return
@@ -149,11 +147,18 @@ export function useLightbox(length) {
     }
 
     window.addEventListener('keydown', onKey)
+
+    // Lock the page behind the modal, but remember whatever was set before
+    // so the cleanup ALWAYS restores it (a stale 'hidden' here would freeze
+    // scrolling after a close, and a stale 'none' would block every click).
+    const previousOverflow = document.body.style.overflow
+    const previousPointerEvents = document.body.style.pointerEvents
     document.body.style.overflow = 'hidden'
 
     return () => {
       window.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
+      document.body.style.overflow = previousOverflow
+      document.body.style.pointerEvents = previousPointerEvents
     }
   }, [open, close, next, prev])
 

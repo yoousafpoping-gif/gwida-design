@@ -175,6 +175,7 @@ function Gallery({ items, limit }) {
       <AnimatePresence>
         {box.open && (
           <Lightbox
+            key="lightbox"
             items={shown}
             index={box.index}
             onClose={box.close}
@@ -238,6 +239,7 @@ function SocialGallery({ brands, mode = 'all' }) {
       <AnimatePresence>
         {scope && box.open && (
           <Lightbox
+            key="lightbox"
             items={scope.items}
             index={box.index}
             onClose={box.close}
@@ -416,6 +418,7 @@ function MenuGallery({ menus }) {
       <AnimatePresence>
         {box.open && (
           <Lightbox
+            key="lightbox"
             items={flat}
             index={box.index}
             onClose={box.close}

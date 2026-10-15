@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useIsPresent } from 'framer-motion'
 import { CloseIcon, ArrowIcon, ZoomIcon } from './Icons.jsx'
 import { computeLens, lensSizeFor } from './lensMath.js'
 import { useI18n } from '../../i18n/index.jsx'
@@ -10,6 +10,12 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
 
   const [canHover, setCanHover] = useState(false)
   const [isZoomEnabled, setIsZoomEnabled] = useState(false)
+
+  /* Framer Motion tells us whether we're still the "present" child. While
+     the exit animation plays we are no longer present, so the full-screen
+     overlay drops to `pointer-events-none`: a lingering exit frame can
+     NEVER keep swallowing clicks on the cards underneath. */
+  const isPresent = useIsPresent()
 
   const imgRef = useRef(null)
   const lensRef = useRef(null)
@@ -31,8 +37,10 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
     if (lensRef.current) lensRef.current.style.opacity = '0'
   }, [])
 
-  /* Hide the lens when the visitor flips to another image. */
+  /* Hide the lens and reset the magnifier whenever the visitor flips to
+     another image, so each slide starts from a clean, zoom-off state. */
   useEffect(() => {
+    setIsZoomEnabled(false)
     hideLens()
   }, [index, hideLens])
 
@@ -93,7 +101,9 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
-      className="fixed inset-0 z-[90] flex items-center justify-center bg-surface/92 p-4 sm:p-8"
+      className={`fixed inset-0 z-[90] flex items-center justify-center bg-surface/92 p-4 sm:p-8 ${
+        isPresent ? '' : 'pointer-events-none'
+      }`}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
