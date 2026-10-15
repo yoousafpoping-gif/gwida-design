@@ -154,10 +154,18 @@
       ),
       radial-gradient(1000px 620px at 6% 8%, var(--c-body-glow-b), transparent 62%),
       radial-gradient(900px 900px at 50% 108%, var(--c-body-glow-c), transparent 60%);
-    background-attachment: fixed;
+    background-attachment: scroll;
     overflow-x: hidden;
     text-rendering: optimizeLegibility;
     transition: background-color 0.35s ease, color 0.35s ease;
+  }
+
+  /* A fixed background is repainted on EVERY scroll frame, which reads as
+     jank on a phone. Lock it to the viewport only where the GPU can take it. */
+  @media (min-width: 1024px) {
+    body {
+      background-attachment: fixed;
+    }
   }
 
   ::selection {
@@ -382,6 +390,17 @@
 
   .writing-vertical {
     writing-mode: vertical-rl;
+  }
+
+  /* Let the browser skip layout/paint of a tile that is far off-screen.
+     `auto <n>` lets it remember the real height once painted, so the
+     scrollbar never jumps. ONLY use on elements that already clip —
+     `content-visibility` implies paint containment, which would otherwise
+     make `position: fixed` descendants (the Lightbox) resolve against
+     this box instead of the viewport. */
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 620px;
   }
 
   @keyframes spin-border {

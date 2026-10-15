@@ -50,7 +50,7 @@ function Card({ item, onOpen, index, heading, sub, brandName }) {
         delay: Math.min(index * 0.04, 0.4),
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="group cursor-zoom-in overflow-hidden rounded-3xl border border-line bg-surface-2 shadow-glass transition-all duration-500 hover:-translate-y-1.5 hover:border-gold-ink/45 hover:shadow-lift"
+      className="group cv-auto cursor-zoom-in overflow-hidden rounded-3xl border border-line bg-surface-2 shadow-glass transition-all duration-500 hover:-translate-y-1.5 hover:border-gold-ink/45 hover:shadow-lift"
     >
       <button
         onClick={() => onOpen(item)}
@@ -80,7 +80,7 @@ function Card({ item, onOpen, index, heading, sub, brandName }) {
             </div>
           ) : (
             <img
-              src={item.src}
+              src={item.thumb ?? item.src}
               alt={`${title} — ${category}`}
               width={item.width}
               height={item.height}
@@ -285,7 +285,7 @@ function MenuSide({ image, caption, side, onOpen, index }) {
             </div>
           ) : (
             <img
-              src={image.src}
+              src={image.thumb ?? image.src}
               alt={caption}
               width={image.width}
               height={image.height}

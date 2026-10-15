@@ -288,9 +288,11 @@ export default function Hero() {
                   <img
                     src={PROFILE_IMG}
                     alt={t('hero.imgAlt')}
-                    width="1024"
-                    height="1024"
+                    width="900"
+                    height="900"
                     loading="eager"
+                    decoding="async"
+                    fetchpriority="high"
                     className="relative aspect-square w-full object-cover"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none'

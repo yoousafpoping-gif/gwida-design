@@ -157,7 +157,7 @@ export default function Navbar() {
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           className={`relative mx-auto flex w-full items-center justify-between rounded-3xl transition-colors duration-500 ${
             scrolled
-              ? 'border border-line bg-surface-2/80 shadow-panel backdrop-blur-2xl'
+              ? 'border border-line bg-surface-2/90 shadow-panel backdrop-blur-md'
               : 'border border-transparent bg-transparent'
           }`}
         >

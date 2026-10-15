@@ -93,7 +93,7 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
-      className="fixed inset-0 z-[90] flex items-center justify-center bg-surface/92 p-4 backdrop-blur-xl sm:p-8"
+      className="fixed inset-0 z-[90] flex items-center justify-center bg-surface/92 p-4 sm:p-8"
       onClick={onClose}
       role="dialog"
       aria-modal="true"

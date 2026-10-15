@@ -4,9 +4,16 @@
    Spaces / parentheses are percent-encoded once via encodeURI().
    ============================================================ */
 
-export const PROFILE_IMG = '/portfolio-assets/profile.jpg'
+export const PROFILE_IMG = '/portfolio-assets/profile.webp'
 
 export const asset = (p) => encodeURI(p)
+
+/* Grid cards render a downscaled twin (see make_thumbs.py) so the home
+   page never downloads a 2000px original just to show a 400px tile. The
+   `thumbs/` folder mirrors the source tree, so the path swap is trivial.
+   The lightbox keeps using the full-resolution original for the lens. */
+export const thumbOf = (p) =>
+  encodeURI(p.replace('portfolio-assets/', 'portfolio-assets/thumbs/'))
 
 /* ============================================================
    NAVIGATION
@@ -319,6 +326,7 @@ export const PROJECTS = portfolioData.map((p, i) => {
     ...p,
     id: `${p.category}-${i}-${p.title}`,
     src: encodeURI(p.image),
+    thumb: thumbOf(p.image),
     cat,
     categoryId: cat.toUpperCase(),
     width,
@@ -378,6 +386,7 @@ function menuSide(base) {
   return {
     file,
     src: encodeURI(`${MENU_DIR}/${file}`),
+    thumb: thumbOf(`${MENU_DIR}/${file}`),
     width,
     height,
   }
