@@ -195,7 +195,7 @@ function Gallery({ items, limit }) {
  * slide only through that brand's designs.
  * ------------------------------------------------------------------ */
 function SocialGallery({ brands, mode = 'all' }) {
-  const { lang, t } = useI18n()
+  const { lang } = useI18n()
   const [scope, setScope] = useState(null)
   const box = useLightbox(scope ? scope.items.length : 0)
 
@@ -218,8 +218,6 @@ function SocialGallery({ brands, mode = 'all' }) {
                 key={b.id}
                 item={b.items[0]}
                 index={i}
-                heading={brandName(b)}
-                sub={t('portfolio.brandCount', { count: b.items.length })}
                 brandName={brandName(b)}
                 onOpen={() => openBrand(b, null)}
               />
