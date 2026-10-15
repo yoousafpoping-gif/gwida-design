@@ -6,8 +6,6 @@ import Reveal from './ui/Reveal.jsx'
 import SectionHeading from './ui/SectionHeading.jsx'
 import { QuoteIcon } from './ui/Icons.jsx'
 
-const PILLARS = ['calligrapher', 'painter', 'graphic']
-
 export default function About() {
   const ref = useRef(null)
   const { isRTL, lang, t } = useI18n()
@@ -113,26 +111,6 @@ export default function About() {
                 {t('about.bio')}
               </p>
             </Reveal>
-
-            {/* Pillars */}
-            <div className="mt-10 grid gap-4 sm:grid-cols-3">
-              {PILLARS.map((p, i) => (
-                <Reveal key={p} delay={0.1 + i * 0.09}>
-                  <div className="group relative h-full overflow-hidden rounded-2xl border border-line bg-ink/[0.03] p-5 transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-400/35 hover:bg-ink/[0.06]">
-                    <span className="absolute -bottom-6 -start-6 h-20 w-20 rounded-full bg-gold-400/10 blur-xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
-                    <span className="font-latin text-xs font-bold text-gold-ink/70">
-                      0{i + 1}
-                    </span>
-                    <h3 className="mt-2 text-base font-bold text-ink">
-                      {t(`about.pillars.${p}.title`)}
-                    </h3>
-                    <p className="mt-1.5 text-[13px] leading-loose text-ink-mute">
-                      {t(`about.pillars.${p}.sub`)}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
 
             {/* Pull quote */}
             <Reveal delay={0.2}>
