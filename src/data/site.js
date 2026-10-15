@@ -202,10 +202,14 @@ const portfolioData = [
   { image: 'portfolio-assets/digital-art/digital-art-1.webp', category: 'الرسم', badgeColor: 'bg-fuchsia-500', title: 'رسم ديجيتال ١', enTitle: 'Digital Painting 1', enDesc: 'A digitally painted artwork with a creative artistic spirit and fine, expressive detail.', description: 'لوحة مرسومة رقميّاً بروح فنية إبداعية وتفاصيل دقيقة ومعبّرة.' },
   { image: 'portfolio-assets/digital-art/digital-art-2.webp', category: 'الرسم', badgeColor: 'bg-fuchsia-500', title: 'رسم ابو تريكة ديجيتال', enTitle: 'Aboutrika Digital Painting', enDesc: 'A digital painting blending colour and line into a distinctive visual composition.', description: 'رسم ديجيتال يمزج بين اللون والخط في تكوين بصري مميّز.' },
   { image: 'portfolio-assets/digital-art/digital-art-3.webp', category: 'الرسم', badgeColor: 'bg-fuchsia-500', title: 'رسم ديجيتال ٣', enTitle: 'Digital Painting 3', enDesc: 'A high-resolution digital artwork crafted with a rich, artistic touch.', description: 'عمل فني رقمي عالي الدقة مصنوع بلمسة فنية غنية.' },
-  { image: 'portfolio-assets/calligraphy/calligraphy-1.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'الزياد بالخط العربي', enTitle: 'Al-Ziyad Calligraphy', enDesc: 'A lettering logo for "Al-Ziyad" with an authentic Arabic calligraphy touch that balances strength and harmony.', description: 'شعار خطّي باسم «الزياد» بلمسة خط عربي أصيلة تجمع بين القوة والاتزان.' },
-  { image: 'portfolio-assets/calligraphy/calligraphy-2.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'احمد جويدة بالخط العربي', enTitle: 'Ahmed Gwida Calligraphy', enDesc: 'A calligraphic composition of the name "Ahmed Gwida" in carefully crafted Arabic letterforms.', description: 'تكوين خطّي يحمل اسم «أحمد جويدة» بحروف عربية مصمّمة بعناية.' },
-  { image: 'portfolio-assets/calligraphy/rosetti-new.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'روزتي بالخط العربي', enTitle: 'Rosetti Calligraphy', enDesc: 'A lettering logo for "Rosetti" that pairs soft letterforms with an elegant composition.', description: 'شعار خطّي باسم «روزتي» يجمع بين نعومة الحروف وأناقة التكوين.' },
-  { image: 'portfolio-assets/calligraphy/al-namir-logo.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'Al Namir', enTitle: 'Al Namir Logo', enDesc: 'A professional logo for "Al Namir" with a contemporary lettering composition that balances strength and clarity.', description: 'لوجو احترافي باسم «Al Namir» بتكوين خطّي معاصر يجمع بين القوة والوضوح.' },
+  { image: 'portfolio-assets/calligraphy/al-ziyad.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'الزياد', enTitle: 'Al-Ziyad', enDesc: 'A lettering logo for "Al-Ziyad" with an authentic Arabic calligraphy touch that balances strength and harmony.', description: 'شعار خطّي باسم «الزياد» بلمسة خط عربي أصيلة تجمع بين القوة والاتزان.' },
+  { image: 'portfolio-assets/calligraphy/ahmed-gwida.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'أحمد جويدة', enTitle: 'Ahmed Gwida', enDesc: 'A calligraphic composition of the name "Ahmed Gwida" in carefully crafted Arabic letterforms.', description: 'تكوين خطّي يحمل اسم «أحمد جويدة» بحروف عربية مصمّمة بعناية.' },
+  { image: 'portfolio-assets/calligraphy/rosetti.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'روزتي', enTitle: 'Rosetti', enDesc: 'A lettering logo for "Rosetti" that pairs soft letterforms with an elegant composition.', description: 'شعار خطّي باسم «روزتي» يجمع بين نعومة الحروف وأناقة التكوين.' },
+  { image: 'portfolio-assets/calligraphy/al-namir.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'النمير فارمسي', enTitle: 'Al Namir Pharmacy', enDesc: 'A bilingual logo for "Al Namir Pharmacy" pairing an Arabic lettering mark with a clean latin wordmark.', description: 'لوجو ثنائي اللغة لصيدلية «النمير» يجمع بين الخط العربي واللاتيني بتكوين نظيف.' },
+  { image: 'portfolio-assets/calligraphy/al-tahami.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'التهامي للاستثمار العقاري والمقاولات', enTitle: 'Al-Tahami Real Estate & Contracting', enDesc: 'A corporate calligraphy logo for "Al-Tahami" for real-estate investment and contracting, blending the trade name with a solid wordmark.', description: 'شعار خطّي مؤسسي لـ«التهامي» للاستثمار العقاري والمقاولات، يجمع بين الاسم التجاري والكتابة الواضحة.' },
+  { image: 'portfolio-assets/calligraphy/gulf-lab.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'مختبر الخليج البيطري', enTitle: 'Gulf Veterinary Lab', enDesc: 'A logo for "Gulf Lab", a comprehensive veterinary laboratory, with a medical mark alongside the Arabic lettering.', description: 'لوجو «مختبر الخليج» الشامل البيطري، يجمع بين الرمز الطبي والخط العربي.' },
+  { image: 'portfolio-assets/calligraphy/hisham-rishwan.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'هشام رشوان للأعمال الفنية', enTitle: 'Hisham Rishwan for Artistic Works', enDesc: 'A calligraphy logo for "Hisham Rishwan for Artistic Works", turning the name into a striking lettering mark.', description: 'شعار خطّي لـ«هشام رشوان للأعمال الفنية» يحوّل الاسم إلى تكوين خطّي لافت.' },
+  { image: 'portfolio-assets/calligraphy/you-can.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'You Can — تطبيق جوال', enTitle: 'You Can — Mobile App', enDesc: 'A modern logo for the "You Can" mobile application with a bold, contemporary lettering mark.', description: 'لوجو عصري لتطبيق الجوال «You Can» بتكوين حروفي جريء ومعاصر.' },
 ]
 
 /* ============================================================
@@ -277,10 +281,14 @@ const DIMENSIONS = {
   'digital-art-1': [1240, 1772],
   'digital-art-2': [1134, 1457],
   'digital-art-3': [2480, 3508],
-  'calligraphy-1': [2000, 2000],
-  'calligraphy-2': [2000, 2000],
-  'rosetti-new': [2000, 2000],
-  'al-namir-logo': [2000, 2000],
+  'al-ziyad': [1024, 1024],
+  'ahmed-gwida': [1024, 1024],
+  'rosetti': [1024, 1024],
+  'al-namir': [1024, 1024],
+  'al-tahami': [1024, 1024],
+  'gulf-lab': [1024, 1024],
+  'hisham-rishwan': [1024, 1024],
+  'you-can': [1024, 1024],
 }
 
 /** Resolves [w, h] for a portfolio asset path. Falls back to 4:3. */
