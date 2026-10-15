@@ -116,6 +116,7 @@ const portfolioData = [
   { image: 'portfolio-assets/calligraphy/calligraphy-1.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'الزياد بالخط العربي', enTitle: 'Al-Ziyad Calligraphy', enDesc: 'A lettering logo for "Al-Ziyad" with an authentic Arabic calligraphy touch that balances strength and harmony.', description: 'شعار خطّي باسم «الزياد» بلمسة خط عربي أصيلة تجمع بين القوة والاتزان.' },
   { image: 'portfolio-assets/calligraphy/calligraphy-2.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'احمد جويدة بالخط العربي', enTitle: 'Ahmed Gwida Calligraphy', enDesc: 'A calligraphic composition of the name "Ahmed Gwida" in carefully crafted Arabic letterforms.', description: 'تكوين خطّي يحمل اسم «أحمد جويدة» بحروف عربية مصمّمة بعناية.' },
   { image: 'portfolio-assets/calligraphy/rosetti-new.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'روزتي بالخط العربي', enTitle: 'Rosetti Calligraphy', enDesc: 'A lettering logo for "Rosetti" that pairs soft letterforms with an elegant composition.', description: 'شعار خطّي باسم «روزتي» يجمع بين نعومة الحروف وأناقة التكوين.' },
+  { image: 'portfolio-assets/calligraphy/al-namir-logo.webp', category: 'الخط', badgeColor: 'bg-emerald-500', title: 'Al Namir', enTitle: 'Al Namir Logo', enDesc: 'A professional logo for "Al Namir" with a contemporary lettering composition that balances strength and clarity.', description: 'لوجو احترافي باسم «Al Namir» بتكوين خطّي معاصر يجمع بين القوة والوضوح.' },
 ]
 
 /* ============================================================
@@ -139,7 +140,8 @@ const DIMENSIONS = {
   'digital-art-3': [2480, 3508],
   'calligraphy-1': [2000, 2000],
   'calligraphy-2': [2000, 2000],
-  'rosetti-new': [937, 834],
+  'rosetti-new': [2000, 2000],
+  'al-namir-logo': [2000, 2000],
 }
 
 /** Resolves [w, h] for a portfolio asset path. Falls back to 4:3. */
