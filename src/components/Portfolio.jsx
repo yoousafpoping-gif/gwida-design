@@ -61,6 +61,18 @@ function coverSort(brands) {
   return [...brands].sort((a, b) => band(a) - band(b) || rank(a) - rank(b))
 }
 
+/* Full social view ("view all"): the client wants the Umrah designs at the
+   top with the Al-Bir charity designs directly beneath them, then every other
+   brand in its original SOCIAL_BRANDS order. */
+const SOCIAL_ALL_PRIORITY = ['umrah', 'al-bir']
+function socialAllSort(brands) {
+  const rank = (b) => {
+    const i = SOCIAL_ALL_PRIORITY.indexOf(b.id)
+    return i === -1 ? SOCIAL_ALL_PRIORITY.length : i
+  }
+  return [...brands].sort((a, b) => rank(a) - rank(b))
+}
+
 /* ------------------------------------------------------------------ *
  * Gallery card
  * - The image is NEVER cropped: `h-auto w-full object-contain` lets
@@ -586,6 +598,9 @@ export default function Portfolio() {
      of scattering through the grid and leaving awkward gaps. */
   const socialCovers = useMemo(() => coverSort(socialBrands), [socialBrands])
 
+  /* Full social view order: Umrah, then Al-Bir charity, then the rest. */
+  const socialAll = useMemo(() => socialAllSort(socialBrands), [socialBrands])
+
   /* Per-category heading + CTA copy, all from `portfolio.sections.<id>`. */
   const sectionCopy = (g) => ({
     eyebrow: t(`portfolio.sections.${g.id}.eyebrow`),
@@ -664,7 +679,7 @@ export default function Portfolio() {
             {isMenus ? (
               <MenuGallery menus={active.items} />
             ) : active.id === 'social-media' ? (
-              <SocialGallery brands={socialBrands} mode="all" />
+              <SocialGallery brands={socialAll} mode="all" />
             ) : (
               <Gallery items={active.items} />
             )}
