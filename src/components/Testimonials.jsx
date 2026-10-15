@@ -62,7 +62,7 @@ export default function Testimonials() {
     <section id="testimonials" className="relative overflow-hidden py-24 sm:py-28 lg:py-32">
       <div className="wrap">
         <SectionHeading
-          index="04"
+              index="03"
           eyebrow={t('testimonials.eyebrow')}
           title={t('testimonials.titleA')}
           highlight={t('testimonials.titleB')}

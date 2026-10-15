@@ -20,7 +20,6 @@ export const thumbOf = (p) =>
    ============================================================ */
 export const NAV_LINKS = [
   { id: 'home', label: 'الرئيسية', enLabel: 'Home' },
-  { id: 'about', label: 'من أنا', enLabel: 'About' },
   { id: 'services', label: 'خدماتي', enLabel: 'Services' },
   { id: 'portfolio', label: 'أعمالي', enLabel: 'Portfolio' },
   { id: 'testimonials', label: 'آراء العملاء', enLabel: 'Testimonials' },
@@ -43,13 +42,6 @@ export const FACEBOOK = 'https://www.facebook.com/ahmed.alfanan2'
 export const ROLES = ['مصمم جرافيك', 'رسام ديجيتال', 'خطاط']
 
 export const ROLES_EN = ['Graphic Designer', 'Digital Painter', 'Calligrapher']
-
-/** Connectives that splice the About bio together around its inline links.
- *  Arabic needs a different joining word per clause, so these are data. */
-export const BIO_JOINERS = {
-  ar: ['، أجمع بين أصالة', '، وخيال', '، واحترافية'],
-  en: [', ', ', ', ' and '],
-}
 
 /* ============================================================
    PORTFOLIO — Categories
@@ -547,6 +539,6 @@ export const TESTIMONIALS = [
    ============================================================ */
 export const STATS = [
   { value: '+25', label: 'عاماً من الخبرة', enLabel: 'Years of Experience' },
-  { value: '+250', label: 'مشروعاً منجزاً', enLabel: 'Projects Delivered' },
+  { value: '+2500', label: 'مشروعاً منجزاً', enLabel: 'Projects Delivered' },
   { value: '4', label: 'مجالات تخصص', enLabel: 'Specialties' },
 ]

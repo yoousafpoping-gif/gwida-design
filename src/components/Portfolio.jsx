@@ -560,7 +560,7 @@ export default function Portfolio() {
       <div className="wrap">
         <div className="flex flex-col gap-9 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
-            index="03"
+              index="02"
             eyebrow={activeCopy ? activeCopy.eyebrow : t('portfolio.eyebrow')}
             title={activeCopy ? activeCopy.titleA : t('portfolio.titleA')}
             highlight={activeCopy ? activeCopy.titleB : t('portfolio.titleB')}

@@ -137,7 +137,7 @@ export default function Contact() {
       <div className="hairline absolute inset-x-0 top-0 h-px" />
       <div className="wrap">
         <SectionHeading
-          index="05"
+              index="04"
           eyebrow={t('contact.eyebrow')}
           title={t('contact.titleA')}
           highlight={t('contact.titleB')}

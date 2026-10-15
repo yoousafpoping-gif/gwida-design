@@ -366,7 +366,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.3, duration: 0.8 }}
-          onClick={() => scrollToSection('about')}
+          onClick={() => scrollToSection('services')}
           className="mx-auto mt-16 flex w-fit flex-col items-center gap-2 text-ink-faint transition-colors hover:text-gold-ink lg:mt-20"
           aria-label={t('hero.scrollAria')}
         >

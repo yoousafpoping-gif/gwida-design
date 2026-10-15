@@ -125,7 +125,7 @@ export default function Services() {
       <div className="wrap">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
-            index="02"
+              index="01"
             eyebrow={t('services.eyebrow')}
             title={t('services.titleA')}
             highlight={t('services.titleB')}

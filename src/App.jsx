@@ -1,7 +1,6 @@
 import BackgroundDecor from './components/BackgroundDecor.jsx'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
-import About from './components/About.jsx'
 import Services from './components/Services.jsx'
 import Portfolio from './components/Portfolio.jsx'
 import Testimonials from './components/Testimonials.jsx'
@@ -15,7 +14,7 @@ function Shell() {
   return (
     <div dir={dir} className="relative min-h-screen overflow-x-clip">
       <a
-        href="#about"
+        href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:end-4 focus:top-4 focus:z-[100] focus:rounded-xl focus:bg-gold-400 focus:px-5 focus:py-3 focus:font-bold focus:text-night-950"
       >
         {t('app.skipToContent')}
@@ -24,9 +23,8 @@ function Shell() {
       <BackgroundDecor />
       <Navbar />
 
-      <main>
+      <main id="main">
         <Hero />
-        <About />
         <Services />
         <Portfolio />
         <Testimonials />
