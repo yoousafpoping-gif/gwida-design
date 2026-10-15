@@ -5,7 +5,7 @@ import { computeLens, lensSizeFor } from './lensMath.js'
 import { useI18n } from '../../i18n/index.jsx'
 
 export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
-  const { t } = useI18n()
+  const { t, isRTL } = useI18n()
   const item = items[index]
 
   const [canHover, setCanHover] = useState(false)
@@ -76,6 +76,17 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
 
   const lensActive = canHover && isZoomEnabled
 
+  /* Touch swipe: enabled only on devices without hover (phones/tablets) so it
+     never fights the mouse magnifier on desktop. The direction follows the
+     writing direction, so a swipe always matches the on-screen image order. */
+  const handleDragEnd = (_event, info) => {
+    const offset = info.offset.x
+    if (Math.abs(offset) < 60) return
+    const forward = isRTL ? offset > 0 : offset < 0
+    if (forward) onNext()
+    else onPrev()
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -145,6 +156,10 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.97 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        drag={canHover ? false : 'x'}
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.35}
+        onDragEnd={handleDragEnd}
         onClick={(e) => e.stopPropagation()}
         className="flex max-h-full w-full max-w-3xl flex-col items-center"
       >
