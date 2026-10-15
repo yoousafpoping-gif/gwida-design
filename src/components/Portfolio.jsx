@@ -50,7 +50,7 @@ function Card({ item, onOpen, index, heading, sub, brandName }) {
         delay: Math.min(index * 0.04, 0.4),
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="group cv-auto cursor-zoom-in overflow-hidden rounded-3xl border border-line bg-surface-2 shadow-glass transition-all duration-500 hover:-translate-y-1.5 hover:border-gold-ink/45 hover:shadow-lift"
+              className="group cv-auto select-none cursor-zoom-in overflow-hidden rounded-3xl border border-line bg-surface-2 shadow-glass transition-all duration-500 hover:-translate-y-1.5 hover:border-gold-ink/45 hover:shadow-lift"
     >
       <button
         onClick={() => onOpen(item)}
@@ -366,7 +366,7 @@ function MenuGallery({ menus }) {
               delay: Math.min(i * 0.05, 0.35),
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="mb-6 inline-block w-full cursor-zoom-in break-inside-avoid overflow-hidden rounded-3xl border border-line bg-surface-2/60 p-4 shadow-glass sm:p-5"
+            className="mb-6 inline-block w-full select-none cursor-zoom-in break-inside-avoid overflow-hidden rounded-3xl border border-line bg-surface-2/60 p-4 shadow-glass sm:p-5"
           >
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <span className="inline-flex items-center gap-2">
@@ -639,7 +639,7 @@ export default function Portfolio() {
                         e.preventDefault()
                         scrollToSection(g.anchor)
                       }}
-                      className="relative z-10 flex cursor-pointer items-center gap-2 rounded-full border border-line bg-surface-2 px-5 py-2.5 text-sm font-bold text-ink-mute transition-colors duration-300 hover:border-gold-ink/45 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50"
+                      className="relative z-10 flex select-none cursor-pointer items-center gap-2 rounded-full border border-line bg-surface-2 px-5 py-2.5 text-sm font-bold text-ink-mute transition-colors duration-300 hover:border-gold-ink/45 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50"
                     >
                       <span className="h-2 w-2 shrink-0 rounded-full bg-gold-400" aria-hidden="true" />
                       {copy.titleB ? `${copy.titleA} ${copy.titleB}` : copy.titleA}

@@ -134,6 +134,21 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  /* Selection is off site-wide so headings/cards never show a stray
+     highlight; form fields opt back in so typing and editing still work. */
+  body {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  input,
+  textarea,
+  select,
+  [contenteditable='true'] {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 6.5rem;

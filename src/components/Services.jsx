@@ -64,7 +64,7 @@ function ServiceCard({ service, featured }) {
     <div
       ref={ref}
       onMouseMove={onMove}
-      className={`group spotlight relative h-full overflow-hidden rounded-3xl border border-line bg-ink/[0.03] p-7 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-ink/[0.06] ${a.ring} ${a.glow} ${
+      className={`group spotlight relative h-full select-none overflow-hidden rounded-3xl border border-line bg-ink/[0.03] p-7 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-ink/[0.06] ${a.ring} ${a.glow} ${
         featured ? 'lg:p-9' : ''
       }`}
     >
@@ -100,7 +100,7 @@ function ServiceCard({ service, featured }) {
           target="_blank"
           rel="noreferrer"
           aria-label={t('services.orderIntro', { service: pick(service, 'title') })}
-          className="relative z-10 mt-7 flex cursor-pointer items-center justify-between border-t border-line pt-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50"
+          className="relative z-10 mt-7 flex select-none cursor-pointer items-center justify-between border-t border-line pt-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50"
         >
           <span className={`font-latin text-[11px] font-bold tracking-[0.25em] ${a.text}`}>
             {service.id.toUpperCase()}
