@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { CATEGORIES, MENUS, PROJECTS } from '../data/site.js'
+import { CATEGORIES, MENUS, PROJECTS, SOCIAL_BRANDS } from '../data/site.js'
 import { useI18n } from '../i18n/index.jsx'
 import SectionHeading from './ui/SectionHeading.jsx'
 import Reveal from './ui/Reveal.jsx'
@@ -31,13 +31,13 @@ const CATEGORY_BY_ID = Object.fromEntries(CATEGORIES.map((c) => [c.id, c]))
  * - All text lives in a solid footer BELOW the image, so nothing
  *   is ever overlaid on top of the artwork.
  * ------------------------------------------------------------------ */
-function Card({ item, onOpen, index }) {
+function Card({ item, onOpen, index, heading, sub, brandName }) {
   const { lang, pick, t } = useI18n()
   const [loaded, setLoaded] = useState(false)
   const [failed, setFailed] = useState(false)
 
-  const title = pick(item, 'title')
-  const desc = pick(item, 'description', 'enDesc')
+  const title = heading ?? pick(item, 'title')
+  const desc = sub ?? pick(item, 'description', 'enDesc')
   const category = pick(CATEGORY_BY_ID[item.cat], 'label')
 
   return (
@@ -118,8 +118,12 @@ function Card({ item, onOpen, index }) {
               </span>
             </span>
 
-            <span className="shrink-0 rounded-lg border border-line bg-ink/[0.05] px-2 py-0.5 font-latin text-[10px] font-bold text-ink-mute">
-              {item.categoryId}
+            <span
+              className={`shrink-0 rounded-lg border border-line bg-ink/[0.05] px-2 py-0.5 text-[10px] font-bold text-ink-mute ${
+                brandName ? '' : 'font-latin'
+              }`}
+            >
+              {brandName ?? item.categoryId}
             </span>
           </div>
 
@@ -172,6 +176,71 @@ function Gallery({ items, limit }) {
         {box.open && (
           <Lightbox
             items={shown}
+            index={box.index}
+            onClose={box.close}
+            onNext={box.next}
+            onPrev={box.prev}
+          />
+        )}
+      </AnimatePresence>
+    </>
+  )
+}
+
+/* ------------------------------------------------------------------ *
+ * Social media — grouped by brand.
+ * `mode="covers"` shows ONE cover card per brand (home-page preview).
+ * `mode="all"` shows every design (full section view).
+ * Opening any card opens a lightbox scoped to THAT brand, so the arrows
+ * slide only through that brand's designs.
+ * ------------------------------------------------------------------ */
+function SocialGallery({ brands, mode = 'all' }) {
+  const { lang, t } = useI18n()
+  const [scope, setScope] = useState(null)
+  const box = useLightbox(scope ? scope.items.length : 0)
+
+  const brandName = (b) => (lang === 'en' ? b.enLabel : b.label)
+
+  const openBrand = (brand, item) => {
+    const idx = item ? brand.items.findIndex((x) => x.id === item.id) : 0
+    setScope(brand)
+    box.setIndex(idx < 0 ? 0 : idx)
+  }
+
+  if (brands.length === 0) return null
+
+  return (
+    <>
+      <div className="mt-9 grid grid-cols-1 items-start gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {mode === 'covers'
+          ? brands.map((b, i) => (
+              <Card
+                key={b.id}
+                item={b.items[0]}
+                index={i}
+                heading={brandName(b)}
+                sub={t('portfolio.brandCount', { count: b.items.length })}
+                brandName={brandName(b)}
+                onOpen={() => openBrand(b, null)}
+              />
+            ))
+          : brands.flatMap((b, bi) =>
+              b.items.map((item, i) => (
+                <Card
+                  key={item.id}
+                  item={item}
+                  index={bi + i}
+                  brandName={brandName(b)}
+                  onOpen={() => openBrand(b, item)}
+                />
+              )),
+            )}
+      </div>
+
+      <AnimatePresence>
+        {scope && box.open && (
+          <Lightbox
+            items={scope.items}
             index={box.index}
             onClose={box.close}
             onNext={box.next}
@@ -457,6 +526,17 @@ export default function Portfolio() {
   const active = view ? groups.find((g) => g.id === view) : null
   const total = PROJECTS.length + MENUS.length
 
+  /* Social designs grouped by brand, in SOCIAL_BRANDS order. Used by
+     SocialGallery both for the home-page covers and the full view. */
+  const socialBrands = useMemo(
+    () =>
+      SOCIAL_BRANDS.map((b) => ({
+        ...b,
+        items: PROJECTS.filter((p) => p.brand === b.id),
+      })).filter((b) => b.items.length > 0),
+    []
+  )
+
   /* Per-category heading + CTA copy, all from `portfolio.sections.<id>`. */
   const sectionCopy = (g) => ({
     eyebrow: t(`portfolio.sections.${g.id}.eyebrow`),
@@ -534,6 +614,8 @@ export default function Portfolio() {
 
             {isMenus ? (
               <MenuGallery menus={active.items} />
+            ) : active.id === 'social-media' ? (
+              <SocialGallery brands={socialBrands} mode="all" />
             ) : (
               <Gallery items={active.items} />
             )}
@@ -572,8 +654,9 @@ export default function Portfolio() {
             {/* One dedicated, vertically stacked section per category */}
             {groups.map((g, gi) => {
               const menus = g.source === 'menus'
+              const isSocial = g.id === 'social-media'
               const preview = menus ? g.items.slice(0, MENU_PREVIEW_LIMIT) : g.items.slice(0, PREVIEW_LIMIT)
-              const hidden = g.items.length - preview.length
+              const hidden = isSocial ? 0 : g.items.length - preview.length
               const copy = sectionCopy(g)
 
               return (
@@ -610,6 +693,8 @@ export default function Portfolio() {
 
                   {menus ? (
                     <MenuGallery menus={preview} />
+                  ) : isSocial ? (
+                    <SocialGallery brands={socialBrands} mode="covers" />
                   ) : (
                     <Gallery items={g.items} limit={PREVIEW_LIMIT} />
                   )}

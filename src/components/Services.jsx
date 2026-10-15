@@ -118,7 +118,6 @@ function ServiceCard({ service, featured }) {
 }
 
 export default function Services() {
-  const [lead, ...rest] = SERVICES
   const { t } = useI18n()
 
   return (
@@ -144,19 +143,14 @@ export default function Services() {
           </RevealGroup>
         </div>
 
-        {/* Bento: featured card spans 2 cols × 2 rows on large screens */}
+        {/* One card per category, in the same order as the portfolio sections
+            (calligraphy → digital art → social → infographics → print → signage). */}
         <RevealGroup
-          className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2"
+          className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
           stagger={0.1}
         >
-          <RevealItem className="sm:col-span-2 lg:col-span-2 lg:row-span-2">
-            <ServiceCard service={lead} featured />
-          </RevealItem>
-          {rest.map((s, i) => (
-            <RevealItem
-              key={s.id}
-              className={i === rest.length - 1 ? 'lg:col-span-2' : 'lg:col-span-1'}
-            >
+          {SERVICES.map((s) => (
+            <RevealItem key={s.id}>
               <ServiceCard service={s} />
             </RevealItem>
           ))}

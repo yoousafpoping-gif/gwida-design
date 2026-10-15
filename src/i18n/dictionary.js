@@ -75,7 +75,7 @@ export const DICT = {
 
     'services.cta': 'اطلب الخدمة',
     'services.eyebrow': 'خدماتي',
-    'services.titleA': 'أربع أدوات',
+    'services.titleA': 'ست أدوات',
     'services.titleB': 'لنجاح علامتك',
     'services.desc':
       'من الفكرة الأولى حتى الملف النهائي الجاهز للطباعة — كل خدمة مُعالَجَة بنفس المعيار، ونفس العناية بالتفاصيل.',
@@ -109,6 +109,7 @@ export const DICT = {
     'portfolio.menuFront': 'وش',
     'portfolio.menuBack': 'ضهر',
     'portfolio.menuShown': 'مينيو معروض',
+    'portfolio.brandCount': '{count} تصميم',
     'portfolio.sections.calligraphy.eyebrow': 'خط عربي',
     'portfolio.sections.calligraphy.titleA': 'الخط',
     'portfolio.sections.calligraphy.titleB': 'العربي',
@@ -271,7 +272,7 @@ export const DICT = {
 
     'services.cta': 'Request this service',
     'services.eyebrow': 'My services',
-    'services.titleA': 'Four tools',
+    'services.titleA': 'Six tools',
     'services.titleB': 'for your brand to succeed',
     'services.desc':
       'From the first idea to the final print-ready file — every service handled to the same standard, with the same attention to detail.',
@@ -305,6 +306,7 @@ export const DICT = {
     'portfolio.menuFront': 'Front',
     'portfolio.menuBack': 'Back',
     'portfolio.menuShown': 'menus shown',
+    'portfolio.brandCount': '{count} designs',
     'portfolio.sections.calligraphy.eyebrow': 'Arabic calligraphy',
     'portfolio.sections.calligraphy.titleA': 'Arabic',
     'portfolio.sections.calligraphy.titleB': 'Calligraphy',
