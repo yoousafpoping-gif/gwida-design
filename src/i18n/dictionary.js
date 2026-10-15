@@ -48,6 +48,7 @@ export const DICT = {
     'hero.scrollAria': 'انتقل إلى قسم خدماتي',
 
     'services.cta': 'اطلب الخدمة',
+    'services.orderIntro': 'مرحباً أستاذ أحمد، أود طلب خدمة: {service}',
     'services.eyebrow': 'خدماتي',
     'services.titleA': 'ست أدوات',
     'services.titleB': 'لنجاح علامتك',
@@ -219,6 +220,7 @@ export const DICT = {
     'hero.scrollAria': 'Scroll to the Services section',
 
     'services.cta': 'Request this service',
+    'services.orderIntro': 'Hello Mr. Ahmed, I would like to request the service: {service}',
     'services.eyebrow': 'My services',
     'services.titleA': 'Six tools',
     'services.titleB': 'for your brand to succeed',

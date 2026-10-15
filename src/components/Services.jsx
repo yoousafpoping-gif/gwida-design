@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { SERVICES } from '../data/site.js'
+import { SERVICES, WHATSAPP } from '../data/site.js'
 import { useI18n } from '../i18n/index.jsx'
 import { RevealGroup, RevealItem } from './ui/Reveal.jsx'
 import SectionHeading from './ui/SectionHeading.jsx'
@@ -46,6 +46,11 @@ function ServiceCard({ service, featured }) {
   const ref = useRef(null)
   const { isRTL, pick, t } = useI18n()
 
+  // Pre-filled WhatsApp order link, in the active language.
+  const orderHref = `${WHATSAPP}?text=${encodeURIComponent(
+    t('services.orderIntro', { service: pick(service, 'title') })
+  )}`
+
   // Pointer-tracked spotlight coordinates
   const onMove = (e) => {
     const el = ref.current
@@ -89,8 +94,14 @@ function ServiceCard({ service, featured }) {
 
         <p className="mt-3 flex-1 text-sm leading-[1.95] text-ink-mute">{pick(service, 'desc')}</p>
 
-        {/* Divider + link */}
-        <div className="mt-7 flex items-center justify-between border-t border-line pt-5">
+        {/* Divider + action: the whole row is a pre-filled WhatsApp order link */}
+        <a
+          href={orderHref}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={t('services.orderIntro', { service: pick(service, 'title') })}
+          className="relative z-10 mt-7 flex cursor-pointer items-center justify-between border-t border-line pt-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50"
+        >
           <span className={`font-latin text-[11px] font-bold tracking-[0.25em] ${a.text}`}>
             {service.id.toUpperCase()}
           </span>
@@ -103,7 +114,7 @@ function ServiceCard({ service, featured }) {
               } ${a.text}`}
             />
           </span>
-        </div>
+        </a>
       </div>
 
       {/* Bottom sheen line that wipes in on hover */}

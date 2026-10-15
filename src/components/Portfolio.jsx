@@ -632,18 +632,21 @@ export default function Portfolio() {
                 {groups.map((g) => {
                   const copy = sectionCopy(g)
                   return (
-                    <button
+                    <a
                       key={g.id}
-                      type="button"
-                      onClick={() => scrollToSection(g.anchor)}
-                      className="flex items-center gap-2 rounded-full border border-line bg-surface-2 px-5 py-2.5 text-sm font-bold text-ink-mute transition-colors duration-300 hover:border-gold-ink/45 hover:text-ink"
+                      href={`#${g.anchor}`}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        scrollToSection(g.anchor)
+                      }}
+                      className="relative z-10 flex cursor-pointer items-center gap-2 rounded-full border border-line bg-surface-2 px-5 py-2.5 text-sm font-bold text-ink-mute transition-colors duration-300 hover:border-gold-ink/45 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50"
                     >
                       <span className="h-2 w-2 shrink-0 rounded-full bg-gold-400" aria-hidden="true" />
                       {copy.titleB ? `${copy.titleA} ${copy.titleB}` : copy.titleA}
                       <span className="latin font-latin text-[11px] text-ink-faint">
                         {g.items.length}
                       </span>
-                    </button>
+                    </a>
                   )
                 })}
               </nav>

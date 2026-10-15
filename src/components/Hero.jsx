@@ -199,7 +199,7 @@ export default function Hero() {
                   {t('hero.yearsValue')}
                 </span>
                 <svg
-                  className="absolute -bottom-1.5 start-0 h-2.5 w-full text-gold-ink/60"
+                  className="pointer-events-none absolute -bottom-1.5 start-0 h-2.5 w-full text-gold-ink/60"
                   viewBox="0 0 100 12"
                   preserveAspectRatio="none"
                 >
@@ -279,12 +279,12 @@ export default function Hero() {
                 className="[transform-style:preserve-3d]"
               >
                 {/* Offset colour block behind the portrait */}
-                <div className="absolute -bottom-6 -start-6 h-4/5 w-4/5 rounded-[2.5rem] border border-gold-400/25 bg-gold-400/[0.06]" />
-                <div className="absolute -end-6 -top-6 h-32 w-32 rounded-full bg-neon-cyan/10 blur-2xl" />
+                <div className="pointer-events-none absolute -bottom-6 -start-6 h-4/5 w-4/5 rounded-[2.5rem] border border-gold-400/25 bg-gold-400/[0.06]" />
+                <div className="pointer-events-none absolute -end-6 -top-6 h-32 w-32 rounded-full bg-neon-cyan/10 blur-2xl" />
 
                 {/* Main portrait frame */}
                 <div className="ring-spin relative overflow-hidden rounded-[2.5rem] border border-line bg-surface-2 shadow-lift">
-                  <div className="absolute inset-0 bg-[linear-gradient(160deg,rgba(248,194,78,0.18),transparent_45%,rgba(45,217,240,0.14))]" />
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(160deg,rgba(248,194,78,0.18),transparent_45%,rgba(45,217,240,0.14))]" />
                   <img
                     src={PROFILE_IMG}
                     alt={t('hero.imgAlt')}
@@ -375,7 +375,7 @@ export default function Hero() {
             <motion.span
               animate={{ y: ['-100%', '100%'] }}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute inset-x-0 h-1/2 bg-gold-sheen"
+              className="pointer-events-none absolute inset-x-0 h-1/2 bg-gold-sheen"
             />
           </span>
         </motion.button>
