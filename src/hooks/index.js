@@ -53,10 +53,24 @@ export function useScrolled(offset = 24) {
  * Smoothly scrolls to a section, accounting for the floating navbar.
  */
 export function scrollToSection(id) {
-  const el = document.getElementById(id)
-  if (!el) return
-  const top = el.getBoundingClientRect().top + window.scrollY - 84
+  const target = document.getElementById(id)
+  if (!target) return
+  const top = target.getBoundingClientRect().top + window.scrollY - 84
   window.scrollTo({ top, behavior: 'smooth' })
+}
+
+/* Fired on card hover/focus so the lightbox image is already in the HTTP
+   cache by the time it is clicked. A module-level Set dedupes requests,
+   so a card hovered many times fetches its preview only once. */
+const prefetched = new Set()
+
+export function prefetchImage(src) {
+  if (!src || typeof window === 'undefined' || typeof window.Image === 'undefined') return
+  if (prefetched.has(src)) return
+  prefetched.add(src)
+  const img = new window.Image()
+  img.decoding = 'async'
+  img.src = src
 }
 
 /* ============================================================

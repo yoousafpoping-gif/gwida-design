@@ -15,6 +15,14 @@ export const asset = (p) => encodeURI(p)
 export const thumbOf = (p) =>
   encodeURI(p.replace('portfolio-assets/', 'portfolio-assets/thumbs/'))
 
+/* The very largest originals (long side > 1400px) also get a balanced
+   "large" twin (see make_large.py). The lightbox opens that instead of
+   the heavy original, so a click paints fast; the original stays on disk
+   as the source of truth. `largeOf` is only applied to those files. */
+export const LARGE_MAX_SIDE = 1400
+export const largeOf = (p) =>
+  encodeURI(p.replace('portfolio-assets/', 'portfolio-assets/large/'))
+
 /* ============================================================
    NAVIGATION
    ============================================================ */
@@ -319,6 +327,7 @@ export const PROJECTS = portfolioData.map((p, i) => {
     id: `${p.category}-${i}-${p.title}`,
     src: encodeURI(p.image),
     thumb: thumbOf(p.image),
+    large: Math.max(width, height) > LARGE_MAX_SIDE ? largeOf(p.image) : null,
     cat,
     categoryId: cat.toUpperCase(),
     width,
@@ -379,6 +388,7 @@ function menuSide(base) {
     file,
     src: encodeURI(`${MENU_DIR}/${file}`),
     thumb: thumbOf(`${MENU_DIR}/${file}`),
+    large: Math.max(width, height) > LARGE_MAX_SIDE ? largeOf(`${MENU_DIR}/${file}`) : null,
     width,
     height,
   }

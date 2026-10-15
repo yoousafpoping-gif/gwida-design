@@ -3,6 +3,7 @@ import { motion, useIsPresent } from 'framer-motion'
 import { CloseIcon, ArrowIcon, ZoomIcon } from './Icons.jsx'
 import { computeLens, lensSizeFor } from './lensMath.js'
 import { useI18n } from '../../i18n/index.jsx'
+import { prefetchImage } from '../../hooks/index.js'
 
 export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
   const { t, isRTL } = useI18n()
@@ -37,12 +38,29 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
     if (lensRef.current) lensRef.current.style.opacity = '0'
   }, [])
 
+  /* The heavy preview fades in over an instant, already-cached thumbnail so
+     a click never shows a blank frame. Reset synchronously when the slide
+     changes (render-phase reset) so the fade-in restarts cleanly. */
+  const [loaded, setLoaded] = useState(false)
+  const [loadedId, setLoadedId] = useState(item?.id)
+  if (item && loadedId !== item.id) {
+    setLoadedId(item.id)
+    setLoaded(false)
+  }
+
   /* Hide the lens and reset the magnifier whenever the visitor flips to
      another image, so each slide starts from a clean, zoom-off state. */
   useEffect(() => {
     setIsZoomEnabled(false)
     hideLens()
   }, [index, hideLens])
+
+  /* Warm the neighbours (wrapping around) so the next arrow press is instant. */
+  useEffect(() => {
+    if (!items || items.length < 2) return
+    const neighbours = [items[index + 1] ?? items[0], items[index - 1] ?? items[items.length - 1]]
+    neighbours.forEach((it) => it && prefetchImage(it.large ?? it.src))
+  }, [index, items])
 
   useEffect(() => () => cancelAnimationFrame(rafRef.current), [])
 
@@ -176,15 +194,32 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
         <div className="relative max-h-[74vh] w-full overflow-hidden rounded-3xl border border-line bg-surface-2 shadow-lift">
           <div className="relative mx-auto w-fit">
             <img
+              src={item.thumb}
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 h-full w-full scale-110 object-cover blur-2xl"
+            />
+            <img
               ref={imgRef}
-              src={item.src}
+              src={item.large ?? item.src}
               alt={item.title}
               width={item.width}
               height={item.height}
-              className={`mx-auto block h-auto max-h-[74vh] w-auto object-contain ${
-                lensActive ? 'cursor-none' : ''
-              }`}
-              loading="lazy"
+              className={`relative z-10 mx-auto block h-auto max-h-[74vh] w-auto object-contain transition-opacity duration-300 ${
+                loaded ? 'opacity-100' : 'opacity-0'
+              } ${lensActive ? 'cursor-none' : ''}`}
+              loading="eager"
+              decoding="async"
+              onLoad={() => setLoaded(true)}
+              onError={(e) => {
+                const el = e.currentTarget
+                if (el.dataset.fallback) {
+                  setLoaded(true)
+                  return
+                }
+                el.dataset.fallback = '1'
+                el.src = item.src
+              }}
               onMouseEnter={(e) => {
                 if (lensActive) scheduleMove(e.clientX, e.clientY)
               }}
@@ -198,11 +233,11 @@ export default function Lightbox({ items, index, onClose, onNext, onPrev }) {
               <div
                 ref={lensRef}
                 aria-hidden="true"
-                className="pointer-events-none absolute left-0 top-0 rounded-full border-2 border-gold-400 opacity-0 shadow-[0_0_0_2px_rgba(248,194,78,0.85),0_0_0_4px_rgba(255,122,47,0.35),0_0_34px_10px_rgba(255,122,47,0.45)] transition-opacity duration-200 will-change-transform"
+                className="pointer-events-none absolute left-0 top-0 z-20 rounded-full border-2 border-gold-400 opacity-0 shadow-[0_0_0_2px_rgba(248,194,78,0.85),0_0_0_4px_rgba(255,122,47,0.35),0_0_34px_10px_rgba(255,122,47,0.45)] transition-opacity duration-200 will-change-transform"
                 style={{
                   width: 160,
                   height: 160,
-                  backgroundImage: `url("${item.src}")`,
+                  backgroundImage: `url("${item.large ?? item.src}")`,
                   backgroundRepeat: 'no-repeat',
                 }}
               />

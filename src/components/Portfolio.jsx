@@ -5,7 +5,7 @@ import { useI18n } from '../i18n/index.jsx'
 import SectionHeading from './ui/SectionHeading.jsx'
 import Reveal from './ui/Reveal.jsx'
 import Lightbox from './ui/Lightbox.jsx'
-import { useLightbox, scrollToSection } from '../hooks/index.js'
+import { useLightbox, scrollToSection, prefetchImage } from '../hooks/index.js'
 import { ArrowIcon, SparkIcon } from './ui/Icons.jsx'
 
 /* How many items the main page shows before the "view all" button.
@@ -23,6 +23,23 @@ const MENU_PREVIEW_LIMIT = 4
 /* Category id -> CATEGORIES entry, so every footer chip label can be
    resolved through `pick()` instead of the raw Arabic string on the item. */
 const CATEGORY_BY_ID = Object.fromEntries(CATEGORIES.map((c) => [c.id, c]))
+
+/* Orders a project group so cards of a similar shape sit beside each other:
+   portrait first, then square, then landscape, and within each band sorted
+   by exact ratio. Stops the grid from zig-zagging between tall and wide art.
+   `Array.prototype.sort` is stable, so equal shapes keep their source order.
+   Social brands and menu pairs are left untouched (their order is meaningful). */
+function sizeSort(items) {
+  const band = (p) => {
+    const ratio = p.width / p.height
+    if (ratio < 0.92) return 0
+    if (ratio > 1.08) return 2
+    return 1
+  }
+  return [...items].sort(
+    (a, b) => band(a) - band(b) || a.width / a.height - b.width / b.height
+  )
+}
 
 /* ------------------------------------------------------------------ *
  * Gallery card
@@ -54,6 +71,8 @@ function Card({ item, onOpen, index, heading, sub, brandName }) {
     >
       <button
         onClick={() => onOpen(item)}
+        onMouseEnter={() => prefetchImage(item.large ?? item.src)}
+        onFocus={() => prefetchImage(item.large ?? item.src)}
         className="block w-full cursor-zoom-in text-start"
         aria-label={t('portfolio.ariaView', { name: title })}
       >
@@ -266,6 +285,8 @@ function MenuSide({ image, caption, side, onOpen, index }) {
     <figure className="group cursor-zoom-in overflow-hidden rounded-2xl border border-line bg-surface-2 shadow-glass transition-all duration-500 hover:-translate-y-1 hover:border-gold-ink/45 hover:shadow-lift">
       <button
         onClick={() => onOpen(image)}
+        onMouseEnter={() => prefetchImage(image.large ?? image.src)}
+        onFocus={() => prefetchImage(image.large ?? image.src)}
         className="block w-full cursor-zoom-in text-start"
         aria-label={t('portfolio.ariaView', { name: caption })}
       >
@@ -519,7 +540,9 @@ export default function Portfolio() {
         items:
           g.source === 'menus'
             ? MENUS
-            : PROJECTS.filter((p) => p.cat === g.id),
+            : g.id === 'social-media'
+              ? PROJECTS.filter((p) => p.cat === g.id)
+              : sizeSort(PROJECTS.filter((p) => p.cat === g.id)),
       })),
     []
   )
